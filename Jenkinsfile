@@ -5,6 +5,7 @@ pipeline {
             image 'compile-sandbox-cal:v1' // Replace with the image name you used when building the Dockerfile
             label 'docker' // Optional: use a node with Docker installed
         }
+        }
     stages {
         stage('Checkout') {
             steps {
