@@ -1,10 +1,15 @@
 pipeline {
-    agent any
+    agent {
+        // Use the Docker image for the build environment
+        docker {
+            image 'compile-sandbox-cal:v1' // Replace with the image name you used when building the Dockerfile
+            label 'docker' // Optional: use a node with Docker installed
+        }
     stages {
-        stage('Clone Repository') {
+        stage('Checkout') {
             steps {
-                // Clone your repository containing the calculator code
-                git 'https://github.com/FaiqueAli/cpp-sandbox'
+                checkout scmGit(branches: [[name: 'main']], 
+                                userRemoteConfigs: [[url: 'https://github.com/raghav-bhardwaj/python']])
             }
         }
         stage('Build') {
