@@ -4,7 +4,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // Clone your repository containing the calculator code
-                git 'https://your-repo-url.git'
+                git 'https://github.com/FaiqueAli/cpp-sandbox'
             }
         }
         stage('Build') {
