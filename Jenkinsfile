@@ -3,7 +3,9 @@ pipeline {
         // Use the Docker image for the build environment
         docker {
             image 'compile-sandbox-cal:v1' // Replace with the image name you used when building the Dockerfile
-            label 'docker-agent' // Optional: use a node with Docker installed
+            args '-v /var/run/docker.sock:/var/run/docker.sock'
+            reuseNode true
+            // label 'docker-agent' // Optional: use a node with Docker installed
         }
         }
     stages {
