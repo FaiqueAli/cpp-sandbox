@@ -19,7 +19,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scmGit(branches: [[name: 'main']], 
-                                userRemoteConfigs: [[url: 'https://github.com/raghav-bhardwaj/python']])
+                                userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
         stage('Build') {
