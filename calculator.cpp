@@ -7,12 +7,10 @@ int multiply(int a, int b) { return a * b; }
 int divide(int a, int b) { return b != 0 ? a / b : 0; }
 
 int main() {
-    int a, b;
-    char op;
-    cout << "Enter two numbers: ";
-    cin >> a >> b;
-    cout << "Enter operator (+, -, *, /): ";
-    cin >> op;
+    int a =2;
+    int b =2;
+    char op = '+';
+    
 
     int result;
     switch(op) {
