@@ -2,7 +2,7 @@ pipeline {
     agent {
         // Use the Docker image for the build environment
         docker {
-            image 'faiqdocker/cppimg:1.1' // Replace with the image name you used when building the Dockerfile
+            image 'compile-sandbox-cal' // Replace with the image name you used when building the Dockerfile
             args '-e DOCKER_HOST=tcp://host.docker.internal:2375'
             // args '-v /var/run/docker.sock:/var/run/docker.sock'
             // reuseNode true
