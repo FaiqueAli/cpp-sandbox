@@ -9,7 +9,15 @@ pipeline {
             // label 'docker-agent' // Optional: use a node with Docker installed
         }
         }
+     environment {
+        DOCKER_HOST = 'tcp://host.docker.internal:2375'
+    }
     stages {
+         stage('Verify Docker') {
+            steps {
+                sh 'docker --version'
+            }
+        }
         stage('Checkout') {
             steps {
                 checkout scmGit(branches: [[name: 'main']], 
