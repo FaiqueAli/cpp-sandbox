@@ -2,11 +2,8 @@ pipeline {
     agent {
         // Use the Docker image for the build environment
         docker {
-            image 'compile-sandbox-cal' // Replace with the image name you used when building the Dockerfile
-            args '-e DOCKER_HOST=tcp://host.docker.internal:2375'
-            // args '-v /var/run/docker.sock:/var/run/docker.sock'
-            // reuseNode true
-            // label 'docker-agent' // Optional: use a node with Docker installed
+            image 'docker:latest'  // Use the Docker image with the Docker CLI
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
         }
         }
      environment {
