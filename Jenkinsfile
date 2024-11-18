@@ -29,7 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Compile the C++ program
-                sh 'pwd'
+                sh 'sleep 60'
                 sh 'make'
             }
         }
