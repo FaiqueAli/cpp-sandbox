@@ -4,10 +4,10 @@ pipeline {
         // Use the Docker image for the build environment
         docker {
             // label 'docker-agent'
-            label 'agent-lable'
+            // label 'agent-lable'
             image 'compile-sandbox-cal'  // Use the Docker image with the Docker CLI
             args '-e DOCKER_HOST=tcp://host.docker.internal:2375'
-            // args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+            args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
             // resenode true
         }
         }
