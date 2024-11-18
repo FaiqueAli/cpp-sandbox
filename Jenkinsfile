@@ -15,11 +15,11 @@ pipeline {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
     }
     stages {
-        //  stage('Verify Docker') {
-        //     steps {
-        //         sh 'docker --version'
-        //     }
-        // }
+         stage('Verify Docker') {
+            steps {
+                sh 'docker --version'
+            }
+        }
         stage('Checkout') {
             steps {
                 checkout scmGit(branches: [[name: 'main']], 
@@ -29,6 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Compile the C++ program
+                sh 'pwd'
                 sh 'make'
             }
         }
