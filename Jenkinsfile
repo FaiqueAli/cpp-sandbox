@@ -83,7 +83,7 @@ pipeline {
                        )
                   ]){
                     // Compile the C++ program
-                    sh 'chmod -R a+rwx $WORKSPACE/my-pipeline_main/'
+                    sh 'chmod -R a+rwx $WORKSPACE/'
                     sh 'pwd'
                     sh './compile.sh'
                   }
