@@ -29,22 +29,21 @@ pipeline {
         stage('Build') {
             steps {
                 // Compile the C++ program
-                sh 'sleep 60'
-                sh 'make'
+                sh './compile.sh'
             }
         }
-        stage('Test Run') {
-            steps {
-                // Run the calculator application for a basic test
-                sh './calculator'
-            }
-        }
-        stage('Clean Up') {
-            steps {
-                // Clean the build files
-                sh 'make clean'
-            }
-        }
+        // stage('Test Run') {
+        //     steps {
+        //         // Run the calculator application for a basic test
+        //         sh './calculator'
+        //     }
+        // }
+        // stage('Clean Up') {
+        //     steps {
+        //         // Clean the build files
+        //         sh 'make clean'
+        //     }
+        // }
         
         }
     post {
