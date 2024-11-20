@@ -78,8 +78,8 @@ pipeline {
                   cache(caches: [
                        arbitraryFileCache(
                            path: "$WORKSPACE/arithmetic_ops/",
-                           includes: "**/libarithmetic_ops.a",
-                           cacheValidityDecidingFile: "$WORKSPACE/arithmetic_ops/"
+                           includes: "**/*.a",
+                           cacheValidityDecidingFile: "$WORKSPACE/arithmetic_ops/libarithmetic_ops.a"
                        )
                   ]){
                     // Compile the C++ program
