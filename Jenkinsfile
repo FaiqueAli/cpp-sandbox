@@ -77,13 +77,13 @@ pipeline {
             steps {
                   cache(caches: [
                        arbitraryFileCache(
-                           path: "/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops",
+                           path: "$WORKSPACE/arithmetic_ops/",
                            includes: "**/*",
-                           cacheValidityDecidingFile: "/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops/Makefile"
+                           cacheValidityDecidingFile: "$WORKSPACE/arithmetic_ops/Makefile"
                        )
                   ]){
                     // Compile the C++ program
-                    sh 'chmod -R a+rwx /var/jenkins_home/agent/workspace/my-pipeline_main/'
+                    sh 'chmod -R a+rwx $WORKSPACE/my-pipeline_main/'
                     sh 'pwd'
                     sh './compile.sh'
                   }
