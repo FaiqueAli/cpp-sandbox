@@ -45,11 +45,13 @@ pipeline {
                 sh 'make clean'
             }
         }
-        post {
+        
+        }
+    post {
             always {
                 archiveArtifacts artifacts: '**/*.a', fingerprint: true
                 }
-            }
         }
+    
     }
 
