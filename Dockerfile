@@ -13,7 +13,8 @@ WORKDIR /app
 COPY . /app
 
 # Build the C++ calculator application
-RUN make
+#RUN make
+./compile.sh
 
 # Specify the command to run when the container starts
 CMD ["/bin/bash"]

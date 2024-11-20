@@ -5,7 +5,7 @@ pipeline {
         docker {
             // label 'agent-lable'
             image 'compile-sandbox-cal'  // Use the Docker image with the Docker CLI
-            label 'docker-agent'
+            label  'docker-agent'
             args '-e DOCKER_HOST=tcp://host.docker.internal:2375'
             args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
             // resenode true
@@ -43,6 +43,11 @@ pipeline {
             steps {
                 // Clean the build files
                 sh 'make clean'
+            }
+        }
+        post {
+        always {
+            archiveArtifacts artifacts: '**/*.a', fingerprint: true
             }
         }
     }
