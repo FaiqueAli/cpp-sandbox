@@ -1,43 +1,43 @@
 
-def ensureDirectoryExists(String dir)
-{
-    sh "mkdir -p \"${dir}\""
-}
-def syncDirectories(String source, String target)
-{
-    ensureDirectoryExists(target)
-    sh "rsync --delete -auq --no-o --no-g --no-p --omit-dir-times --modify-window=1 \"${source}\" \"${target}\""
-}
-def prepareCache(String baseDir, String branchDir, String subDir = "", boolean forceSync = false)
-{
-    def getFullDir = { String dir -> subDir == "" ? dir : "${dir}/${subDir}" }
+// def ensureDirectoryExists(String dir)
+// {
+//     sh "mkdir -p \"${dir}\""
+// }
+// def syncDirectories(String source, String target)
+// {
+//     ensureDirectoryExists(target)
+//     sh "rsync --delete -auq --no-o --no-g --no-p --omit-dir-times --modify-window=1 \"${source}\" \"${target}\""
+// }
+// def prepareCache(String baseDir, String branchDir, String subDir = "", boolean forceSync = false)
+// {
+//     def getFullDir = { String dir -> subDir == "" ? dir : "${dir}/${subDir}" }
  
-    final fullBaseDir = getFullDir(baseDir)
-    final fullBranchDir = getFullDir(branchDir)
+//     final fullBaseDir = getFullDir(baseDir)
+//     final fullBranchDir = getFullDir(branchDir)
  
-    if(fileExists(fullBranchDir) && !forceSync)
-    {
-        echo "Reusing branch cache"
-    }
-    else
-    {
-        ensureDirectoryExists(fullBranchDir)
+//     if(fileExists(fullBranchDir) && !forceSync)
+//     {
+//         echo "Reusing branch cache"
+//     }
+//     else
+//     {
+//         ensureDirectoryExists(fullBranchDir)
  
-        echo "Checking ${fullBaseDir} for existing cache"
+//         echo "Checking ${fullBaseDir} for existing cache"
  
-        final fullBaseDirExists = sh(script: "test -d ${fullBaseDir}", returnStatus: true) == 0
+//         final fullBaseDirExists = sh(script: "test -d ${fullBaseDir}", returnStatus: true) == 0
  
-        if(fullBaseDirExists)
-        {
-            echo "Updating branch cache with global one"
-            syncDirectories(fullBaseDir, fullBranchDir)
-        }
-        else
-        {
-            echo "No global cache available - continuing without"
-        }
-    }
-}
+//         if(fullBaseDirExists)
+//         {
+//             echo "Updating branch cache with global one"
+//             syncDirectories(fullBaseDir, fullBranchDir)
+//         }
+//         else
+//         {
+//             echo "No global cache available - continuing without"
+//         }
+//     }
+// }
 pipeline {
     // agent any
     agent {
@@ -54,9 +54,13 @@ pipeline {
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
     }
-    cache(maxCacheSize: 500, defaultBranch: 'main', caches: [
-        arbitraryFileCache(path: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops', cacheValidityDecidingFile: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops/Makefile')
-]) {
+    
+    // cache(maxCacheSize: 500, defaultBranch: 'main', caches: [
+    //     arbitraryFileCache(path: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops', 
+    //     cacheValidityDecidingFile: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops/Makefile')
+    // ])
+
+    
     stages {
         //  stage('Verify Docker') {
         //     steps {
@@ -71,6 +75,14 @@ pipeline {
         }
         stage('Build') {
             steps {
+                  cache(caches: [
+                       arbitraryFileCache(
+                           path: "/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops",
+                           includes: "**/*",
+                           cacheValidityDecidingFile: "/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops/Makefile"
+                       )
+                  ])
+        
                 // Compile the C++ program
                 sh 'chmod -R a+rwx /var/jenkins_home/agent/workspace/my-pipeline_main/'
                 sh 'pwd'
