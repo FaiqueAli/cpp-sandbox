@@ -46,9 +46,10 @@ pipeline {
             }
         }
         post {
-        always {
-            archiveArtifacts artifacts: '**/*.a', fingerprint: true
+            always {
+                archiveArtifacts artifacts: '**/*.a', fingerprint: true
+                }
             }
         }
     }
-}
+
