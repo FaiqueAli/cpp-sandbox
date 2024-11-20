@@ -29,7 +29,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Compile the C++ program
-                sh 'chmod -R a+rwx /app/'
+                sh 'chmod -R a+rwx /var/jenkins_home/agent/workspace/my-pipeline_main/'
                 sh 'pwd'
                 sh './compile.sh'
 
