@@ -81,12 +81,14 @@ pipeline {
                            includes: "**/*",
                            cacheValidityDecidingFile: "/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops/Makefile"
                        )
-                  ])
-        
-                // Compile the C++ program
-                sh 'chmod -R a+rwx /var/jenkins_home/agent/workspace/my-pipeline_main/'
-                sh 'pwd'
-                sh './compile.sh'
+                  ]){
+                    // Compile the C++ program
+                    sh 'chmod -R a+rwx /var/jenkins_home/agent/workspace/my-pipeline_main/'
+                    sh 'pwd'
+                    sh './compile.sh'
+                  }
+                
+                
 
             }
         }
