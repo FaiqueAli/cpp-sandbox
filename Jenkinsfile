@@ -29,7 +29,10 @@ pipeline {
         stage('Build') {
             steps {
                 // Compile the C++ program
+                sh 'chmod -R a+rwx /app/'
+                sh 'pwd'
                 sh './compile.sh'
+
             }
         }
         // stage('Test Run') {
