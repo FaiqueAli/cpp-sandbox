@@ -76,13 +76,13 @@ pipeline {
         stage('Build') {
             steps {
                   
-                  sh 'git rev-parse HEAD > .cache'
+                //   sh 'git rev-parse HEAD > .cache'
                                       
                   cache(caches: [
                        arbitraryFileCache(
                            path: "$WORKSPACE",
                            includes: "**/*.a",
-                           cacheValidityDecidingFile: ".cache"
+                           cacheValidityDecidingFile: "main_logic.o"
                        )
                   ])
                   {
