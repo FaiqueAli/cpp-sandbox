@@ -75,24 +75,22 @@ pipeline {
         }
         stage('Build') {
             steps {
-                    
-                  sh 'apt update'
-                  sh 'apt install -y git'
+                  
                   sh 'git rev-parse HEAD > .cache'
                                       
-                //   cache(caches: [
-                //        arbitraryFileCache(
-                //            path: "$WORKSPACE",
-                //            includes: "**/*",
-                //            cacheValidityDecidingFile: ".cache"
-                //        )
-                //   ])
-                //   {
-                    // Compile the C++ program
+                  cache(caches: [
+                       arbitraryFileCache(
+                           path: "$WORKSPACE",
+                           includes: "**/*",
+                           cacheValidityDecidingFile: ".cache"
+                       )
+                  ])
+                  {
+                    Compile the C++ program
                     sh 'chmod -R a+rwx $WORKSPACE/'
                     sh 'pwd'
                     sh './compile.sh'
-                //   }
+                  }
                 
                 
 
