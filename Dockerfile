@@ -5,6 +5,8 @@ FROM ubuntu:latest
 RUN apt-get update && \
     apt-get install -y build-essential && \
     rm -rf /var/lib/apt/lists/*
+RUN apt update
+RUN apt install -y git
 
 # Set the working directory in the container
 WORKDIR /app
@@ -14,7 +16,7 @@ COPY . /app
 
 # Build the C++ calculator application
 #RUN make
-./compile.sh
+# RUN compile.sh
 
 # Specify the command to run when the container starts
 CMD ["/bin/bash"]
