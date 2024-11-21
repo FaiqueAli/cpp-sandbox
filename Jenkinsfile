@@ -79,7 +79,7 @@ pipeline {
                        arbitraryFileCache(
                            path: "$WORKSPACE",
                            includes: "**/*.a",
-                           cacheValidityDecidingFile: "*.a"
+                           cacheValidityDecidingFile: "Project-lock.cache"
                        )
                   ]){
                     // Compile the C++ program
