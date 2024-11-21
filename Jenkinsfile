@@ -76,8 +76,8 @@ pipeline {
         stage('Build') {
             steps {
                     
-                  sh 'RUN apt update'
-                  sh 'RUN apt install -y git'
+                  sh 'apt update'
+                  sh 'apt install -y git'
                   sh 'git rev-parse HEAD > .cache'
                                       
                   cache(caches: [
