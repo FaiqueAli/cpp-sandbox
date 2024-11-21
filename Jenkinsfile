@@ -80,13 +80,14 @@ pipeline {
                   sh 'apt install -y git'
                   sh 'git rev-parse HEAD > .cache'
                                       
-                  cache(caches: [
-                       arbitraryFileCache(
-                           path: "$WORKSPACE",
-                           includes: "**/*",
-                           cacheValidityDecidingFile: ".cache"
-                       )
-                  ]){
+                //   cache(caches: [
+                //        arbitraryFileCache(
+                //            path: "$WORKSPACE",
+                //            includes: "**/*",
+                //            cacheValidityDecidingFile: ".cache"
+                //        )
+                //   ])
+                  {
                     // Compile the C++ program
                     sh 'chmod -R a+rwx $WORKSPACE/'
                     sh 'pwd'
