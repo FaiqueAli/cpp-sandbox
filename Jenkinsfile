@@ -76,7 +76,11 @@ pipeline {
         stage('Build') {
             steps {
                     
-                  sh 'git rev-parse HEAD > .cache'
+                  {
+                    sh 'RUN apt update'
+                    sh 'RUN apt install -y git'
+                    sh 'git rev-parse HEAD > .cache'
+                  }
                     
                   cache(caches: [
                        arbitraryFileCache(
