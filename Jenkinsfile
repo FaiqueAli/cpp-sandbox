@@ -82,10 +82,11 @@ pipeline {
                        arbitraryFileCache(
                            path: "$WORKSPACE",
                            includes: "**/*.a",
-                           cacheValidityDecidingFile: ".cache"
-                       ),
-                       defaultBranch: "main",
-                       caches: "yes"
+                           cacheValidityDecidingFile: ".cache",
+                           defaultBranch: "main",
+                           caches: "yes"
+                       )
+                       
                   ])
                   {
                     // Compile the C++ program
