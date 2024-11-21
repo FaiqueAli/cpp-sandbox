@@ -82,12 +82,11 @@ pipeline {
                        arbitraryFileCache(
                            path: "$WORKSPACE",
                            includes: "**/*.a",
-                           cacheValidityDecidingFile: ".cache",
-                           defaultBranch: "main",
-                           caches: "yes"
-                       )
-                       
-                  ])
+                           cacheValidityDecidingFile: ".cache"
+                       )                       
+                  ],
+                        defaultBranch: "main"
+                  )
                   {
                     // Compile the C++ program
                     sh 'chmod -R a+rwx $WORKSPACE/'
