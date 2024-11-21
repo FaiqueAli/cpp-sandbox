@@ -81,7 +81,7 @@ pipeline {
                   cache(caches: [
                        arbitraryFileCache(
                            path: "$WORKSPACE",
-                           includes: "**/*.a",
+                           includes: "**/*",
                            cacheValidityDecidingFile: ".cache"
                        )
                   ])

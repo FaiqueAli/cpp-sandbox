@@ -16,7 +16,7 @@ COPY . /app
 
 # Build the C++ calculator application
 #RUN make
-# RUN compile.sh
+# RUN  make
 
 # Specify the command to run when the container starts
 CMD ["/bin/bash"]
