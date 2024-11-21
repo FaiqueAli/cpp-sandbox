@@ -51,6 +51,9 @@ pipeline {
             // resenode true
         }
         }
+    parameters {
+            gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'BRANCH', type: 'PT_BRANCH'
+        }    
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
     }
