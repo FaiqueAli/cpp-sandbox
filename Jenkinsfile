@@ -75,11 +75,12 @@ pipeline {
         }
         stage('Build') {
             steps {
+                  {sh 'git rev-parse HEAD > .cache'}
                   cache(caches: [
                        arbitraryFileCache(
                            path: "$WORKSPACE",
-                           includes: "**/*.a",
-                           cacheValidityDecidingFile: "Project-lock.cache"
+                           includes: "**/*",
+                           cacheValidityDecidingFile: ".cache"
                        )
                   ]){
                     // Compile the C++ program
