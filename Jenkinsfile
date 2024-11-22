@@ -51,8 +51,12 @@ pipeline {
             // resenode true
         }
         }
+    parameters {
+            gitParameter branchFilter: 'origin/(.*)', defaultValue: 'main', name: 'BRANCH', type: 'PT_BRANCH'
+        }    
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
+        CACHE_KEY = 'cache_master_objects'
     }
     
     // cache(maxCacheSize: 500, defaultBranch: 'main', caches: [
@@ -73,24 +77,66 @@ pipeline {
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
+  
         stage('Build') {
+            // when {
+            //     branch 'main' // Only for master branch
+            // }
+            
             steps {
-                  sh 'git rev-parse HEAD > .cache'
-                  cache(caches: [
-                       arbitraryFileCache(
-                           path: "$WORKSPACE",
-                           includes: "**/*.a",
-                           cacheValidityDecidingFile: ".cache"
-                       )                       
-                  ],
-                        defaultBranch: "main"
-                  )
-                  {
-                    // Compile the C++ program
-                    sh 'chmod -R a+rwx $WORKSPACE/'
-                    sh 'pwd'
-                    sh './compile.sh'
-                  }
+
+                //start
+                script {
+                    if (env.BRANCH_NAME == 'main') {
+                        echo "Building the main branch directly."
+                        sh 'git rev-parse HEAD > .cache'
+
+                        //working with cache
+                        cache(caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: ".cache"
+                            )                       
+                        ],
+                            defaultBranch: "main"
+                        )
+                        {
+                        // Compile the C++ program
+                            sh 'chmod -R a+rwx $WORKSPACE/'
+                            sh 'pwd'
+                            sh './compile.sh'
+                        }
+
+
+
+                    } else if (env.CHANGE_ID) {
+                        echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
+                        // Add actions specific to pull requests targeting main
+                    } else {
+                        echo "This is not the main branch or a pull request."
+                        // Add actions for other branches
+                    }
+                }
+                //end
+
+                //   sh 'git rev-parse HEAD > .cache'
+                                      
+                //   cache(caches: [
+                //        arbitraryFileCache(
+                //            path: "$WORKSPACE",
+                //            includes: "**/*.a",
+                //            cacheValidityDecidingFile: ".cache"
+                //        )                       
+                //   ],
+                //         defaultBranch: "main"
+                //   )
+                //   {
+                //     // Compile the C++ program
+                //     sh 'chmod -R a+rwx $WORKSPACE/'
+                //     sh 'pwd'
+                //     sh './compile.sh'
+                //   }
                 
             }
         }
