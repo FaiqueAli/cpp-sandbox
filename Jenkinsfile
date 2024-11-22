@@ -56,6 +56,7 @@ pipeline {
         }    
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
+        CACHE_KEY = 'cache_master_objects'
     }
     
     // cache(maxCacheSize: 500, defaultBranch: 'main', caches: [
@@ -76,28 +77,50 @@ pipeline {
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
-        stage('Build') {
-            steps {
-                  
-                  sh 'git rev-parse HEAD > .cache'
-                                      
-                  cache(caches: [
-                       arbitraryFileCache(
-                           path: "$WORKSPACE",
-                           includes: "**/*.a",
-                           cacheValidityDecidingFile: ".cache"
-                       )                       
-                  ],
-                        defaultBranch: "main"
-                  )
-                  {
-                    // Compile the C++ program
-                    sh 'chmod -R a+rwx $WORKSPACE/'
-                    sh 'pwd'
-                    sh './compile.sh'
-                  }
-                
+         stage('Setup Cache') {
+            when {
+                expression { env.BRANCH_NAME != 'main' } // For feature branches
             }
+            steps {
+                cache(maxCacheSize: 50, caches: [
+                    cache(path: 'arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
+                    cache(path: 'input_handler', key: "${CACHE_KEY}/input_handler"),
+                    // cache(path: 'folder3', key: "${CACHE_KEY}/folder3")
+                ])
+            }
+        }
+        stage('Build') {
+            when {
+                branch 'main' // Only for master branch
+            }
+            steps {
+                sh 'make all'
+                cache(maxCacheSize: 50, caches: [
+                    cache(path: 'arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
+                    cache(path: 'input_handler', key: "${CACHE_KEY}/input_handler")
+                ])
+            }
+            // steps {
+                  
+            //       sh 'git rev-parse HEAD > .cache'
+                                      
+            //       cache(caches: [
+            //            arbitraryFileCache(
+            //                path: "$WORKSPACE",
+            //                includes: "**/*.a",
+            //                cacheValidityDecidingFile: ".cache"
+            //            )                       
+            //       ],
+            //             defaultBranch: "main"
+            //       )
+            //       {
+            //         // Compile the C++ program
+            //         sh 'chmod -R a+rwx $WORKSPACE/'
+            //         sh 'pwd'
+            //         sh './compile.sh'
+            //       }
+                
+            // }
         }
         // stage('Test Run') {
         //     steps {
