@@ -40,12 +40,10 @@
 // }
 def compileCode()
 {
-    {
-                        // Compile the C++ program
-                            sh 'chmod -R a+rwx $WORKSPACE/'
-                            sh 'pwd'
-                            sh './compile.sh'
-                        }
+    // Compile the C++ program
+    sh 'chmod -R a+rwx $WORKSPACE/'
+    sh 'pwd'
+    sh './compile.sh'
 }
 pipeline {
     // agent any
