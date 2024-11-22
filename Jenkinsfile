@@ -93,42 +93,28 @@ pipeline {
             when {
                 branch 'main' // Only for master branch
             }
+            
             steps {
-                // Compile the C++ program
-                    
-                cache(caches: [
-                    cache(path: '$WORKSPACE/arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
-                    cache(path: '$WORKSPACE/input_handler', key: "${CACHE_KEY}/input_handler")
-                    ],
-                    maxCacheSize: 100, 
-                    )
-                {
+                              
+                  sh 'git rev-parse HEAD > .cache'
+                                      
+                  cache(caches: [
+                       arbitraryFileCache(
+                           path: "$WORKSPACE",
+                           includes: "**/*.a",
+                           cacheValidityDecidingFile: ".cache"
+                       )                       
+                  ],
+                        defaultBranch: "main"
+                  )
+                  {
+                    // Compile the C++ program
                     sh 'chmod -R a+rwx $WORKSPACE/'
                     sh 'pwd'
                     sh './compile.sh'
-                }
-            }
-            // steps {
-                  
-            //       sh 'git rev-parse HEAD > .cache'
-                                      
-            //       cache(caches: [
-            //            arbitraryFileCache(
-            //                path: "$WORKSPACE",
-            //                includes: "**/*.a",
-            //                cacheValidityDecidingFile: ".cache"
-            //            )                       
-            //       ],
-            //             defaultBranch: "main"
-            //       )
-            //       {
-            //         // Compile the C++ program
-            //         sh 'chmod -R a+rwx $WORKSPACE/'
-            //         sh 'pwd'
-            //         sh './compile.sh'
-            //       }
+                  }
                 
-            // }
+            }
         }
         // stage('Test Run') {
         //     steps {
