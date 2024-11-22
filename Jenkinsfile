@@ -94,7 +94,10 @@ pipeline {
                 branch 'main' // Only for master branch
             }
             steps {
-                sh 'make all'
+                // Compile the C++ program
+                    sh 'chmod -R a+rwx $WORKSPACE/'
+                    sh 'pwd'
+                    sh './compile.sh'
                 cache(maxCacheSize: 50, caches: [
                     cache(path: 'arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
                     cache(path: 'input_handler', key: "${CACHE_KEY}/input_handler")
