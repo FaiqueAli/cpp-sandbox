@@ -83,8 +83,8 @@ pipeline {
             }
             steps {
                 cache(maxCacheSize: 50, caches: [
-                    cache(path: 'arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
-                    cache(path: 'input_handler', key: "${CACHE_KEY}/input_handler"),
+                    cache(path: '$WORKSPACE/arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
+                    cache(path: '$WORKSPACE/input_handler', key: "${CACHE_KEY}/input_handler"),
                     // cache(path: 'folder3', key: "${CACHE_KEY}/folder3")
                 ])
             }
@@ -96,9 +96,9 @@ pipeline {
             steps {
                 // Compile the C++ program
                     
-                    cache(maxCacheSize: 50, caches: [
-                    cache(path: 'arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
-                    cache(path: 'input_handler', key: "${CACHE_KEY}/input_handler")
+                cache(maxCacheSize: 50, caches: [
+                    cache(path: '$WORKSPACE/arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
+                    cache(path: '$WORKSPACE/input_handler', key: "${CACHE_KEY}/input_handler")
                     ])
                 {
                     sh 'chmod -R a+rwx $WORKSPACE/'
