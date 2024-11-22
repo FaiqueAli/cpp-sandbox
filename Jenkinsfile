@@ -38,6 +38,15 @@
 //         }
 //     }
 // }
+def compileCode()
+{
+    {
+                        // Compile the C++ program
+                            sh 'chmod -R a+rwx $WORKSPACE/'
+                            sh 'pwd'
+                            sh './compile.sh'
+                        }
+}
 pipeline {
     // agent any
     agent {
@@ -114,7 +123,8 @@ pipeline {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
                         // Add actions specific to pull requests targeting main
                     } else {
-                        echo "This is not the main branch or a pull request."
+                        echo "Compile feature branch"
+                        compileCode()
                         // Add actions for other branches
                     }
                 }
