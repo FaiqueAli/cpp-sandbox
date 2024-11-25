@@ -73,7 +73,7 @@ pipeline {
             //     branch 'main' // Only for master branch
             // }
             
-            //steps {
+            steps {
 
                 //start
                 script {
@@ -116,7 +116,7 @@ pipeline {
                 }
 
                 
-            //}
+            }
         }
         
         }
