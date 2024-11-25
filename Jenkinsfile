@@ -64,7 +64,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                checkout scmGit(branches: [[name: 'feature/cache']], 
+                checkout scmGit(branches: [[name: '(*/feature/cache']], 
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
