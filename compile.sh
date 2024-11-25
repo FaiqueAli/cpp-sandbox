@@ -1,12 +1,8 @@
-# cd arithmetic_ops
-# make
-# cd ../input_handler
-# make
-cd ../main_logic
-make
+# # cd arithmetic_ops
+# # make
+# # cd ../input_handler
+# # make
 
-echo 'this is the compile.sh script'
-pwd
-ls
-
-./main_logic.cpp
+# cd ../main_logic
+# make
+# ./main_logic.cpp
