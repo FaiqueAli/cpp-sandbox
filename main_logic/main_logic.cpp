@@ -9,6 +9,9 @@ int main() {
     int b = getInputB();
     char op = getOperator();
 
+    cout << "Value getInputA()!"<< getInputA() << endl; 
+    cout << "Value getInputB()!"<< getInputB() << endl; 
+
     int result;
     switch(op) {
         case '+': result = add(a, b); break;
