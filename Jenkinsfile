@@ -66,18 +66,9 @@ pipeline {
         CACHE_KEY = 'cache_master_objects'
     }
     
-    // cache(maxCacheSize: 500, defaultBranch: 'main', caches: [
-    //     arbitraryFileCache(path: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops', 
-    //     cacheValidityDecidingFile: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops/Makefile')
-    // ])
-
     
     stages {
-        //  stage('Verify Docker') {
-        //     steps {
-        //         sh 'docker --version'
-        //     }
-        // }
+
         stage('Checkout') {
             steps {
                 checkout scmGit(branches: [[name: 'main']], 
@@ -117,59 +108,15 @@ pipeline {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
                         // Add actions specific to pull requests targeting main
                     } else {
-
-                        sh "git branch"
-                        sh "git checkout ${env.BRANCH_NAME}"
-                       //working with cache
-                        cache(caches: [
-                            arbitraryFileCache(
-                                path: "$WORKSPACE",
-                                includes: "**/*.a",
-                                cacheValidityDecidingFile: ".cache"
-                            )                       
-                        ]
-                        , defaultBranch: "main"
-                        )
-                        {
-                        // Compile the feature branch
-                             compileCode()
-                        }
+                     
+                        echo "This is not the main branch or a pull request."
+                        chmod +x folderNames.sh
+                        sh './folderNames.sh'
                     }
-                }
                 //end
-
-                //   sh 'git rev-parse HEAD > .cache'
-                                      
-                //   cache(caches: [
-                //        arbitraryFileCache(
-                //            path: "$WORKSPACE",
-                //            includes: "**/*.a",
-                //            cacheValidityDecidingFile: ".cache"
-                //        )                       
-                //   ],
-                //         defaultBranch: "main"
-                //   )
-                //   {
-                //     // Compile the C++ program
-                //     sh 'chmod -R a+rwx $WORKSPACE/'
-                //     sh 'pwd'
-                //     sh './compile.sh'
-                //   }
-                
+                              
             }
         }
-        // stage('Test Run') {
-        //     steps {
-        //         // Run the calculator application for a basic test
-        //         sh './calculator'
-        //     }
-        // }
-        // stage('Clean Up') {
-        //     steps {
-        //         // Clean the build files
-        //         sh 'make clean'
-        //     }
-        // }
         
         }
     post {
