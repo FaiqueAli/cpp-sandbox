@@ -1,5 +1,5 @@
 #include "input_handler.h"
 
-int getInputA() { return 11; }
-int getInputB() { return 23; }
+int getInputA() { return 1; }
+int getInputB() { return 2; }
 char getOperator() { return '+'; }
