@@ -69,12 +69,12 @@ pipeline {
     
     stages {
 
-        stage('Checkout') {
-            steps {
-                checkout scmGit(branches: [[name: 'main']], 
-                                userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
-            }
-        }
+        //stage('Checkout') {
+        //    steps {
+        //       checkout scmGit(branches: [[name: 'main']], 
+        //                        userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
+        //    }
+        //}
   
         stage('Build') {
             // when {
