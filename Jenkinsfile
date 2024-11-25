@@ -59,12 +59,7 @@ pipeline {
         CHANGED_FOLDERS = ""
     }
     
-    // cache(maxCacheSize: 500, defaultBranch: 'main', caches: [
-    //     arbitraryFileCache(path: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops', 
-    //     cacheValidityDecidingFile: '/var/jenkins_home/agent/workspace/my-pipeline_main/arithmetic_ops/Makefile')
-    // ])
-
-    
+      
     stages {
         //  stage('Verify Docker') {
         //     steps {
@@ -77,18 +72,18 @@ pipeline {
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
-         stage('Setup Cache') {
-            when {
-                expression { env.BRANCH_NAME != 'main' } // For feature branches
-            }
-            steps {
-                cache(maxCacheSize: 50, caches: [
-                    cache(path: '$WORKSPACE/arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
-                    cache(path: '$WORKSPACE/input_handler', key: "${CACHE_KEY}/input_handler"),
-                    // cache(path: 'folder3', key: "${CACHE_KEY}/folder3")
-                ])
-            }
-        }
+        //  stage('Setup Cache') {
+        //     when {
+        //         expression { env.BRANCH_NAME != 'main' } // For feature branches
+        //     }
+        //     steps {
+        //         cache(maxCacheSize: 50, caches: [
+        //             cache(path: '$WORKSPACE/arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
+        //             cache(path: '$WORKSPACE/input_handler', key: "${CACHE_KEY}/input_handler"),
+        //             // cache(path: 'folder3', key: "${CACHE_KEY}/folder3")
+        //         ])
+        //     }
+        // }
         stage('Build') {
             when {
                 branch 'main' // Only for master branch
@@ -126,6 +121,9 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
                         echo "This is not the main branch or a pull request."
+                        chmod +x folderNames.sh
+                         sh './folderNames.sh'
+
                         // Add actions for other branches
                     }
                 }
