@@ -38,13 +38,6 @@
 //         }
 //     }
 // }
-def compileCode()
-{
-    // Compile the C++ program
-    sh 'chmod -R a+rwx $WORKSPACE/'
-    sh 'pwd'
-    sh './compile.sh'
-}
 pipeline {
     // agent any
     agent {
@@ -63,31 +56,30 @@ pipeline {
         }    
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
-        CACHE_KEY = 'cache_master_objects'
+        CHANGED_FOLDERS = ""
     }
     
-    
+      
     stages {
 
-        //stage('Checkout') {
-        //    steps {
-        //       checkout scmGit(branches: [[name: 'main']], 
-        //                        userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
-        //    }
-        //}
-  
+        stage('Checkout') {
+            steps {
+                checkout scmGit(branches: [[name: 'main']], 
+                                userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
+            }
+        }
         stage('Build') {
-            // when {
-            //     branch 'main' // Only for master branch
-            // }
+            when {
+                branch 'main' // Only for master branch
+            }
             
             steps {
 
                 //start
                 script {
                     if (env.BRANCH_NAME == 'main') {
-                        echo "Building the main branch directly."
-                        sh 'git rev-parse HEAD > .cache'
+                        // echo "Building the main branch directly."
+                        // sh 'git rev-parse HEAD > .cache'
 
                         //working with cache
                         cache(caches: [
@@ -101,20 +93,29 @@ pipeline {
                         )
                         {
                         // Compile the C++ program
-                            compileCode()
+                            sh 'chmod -R a+rwx $WORKSPACE/'
+                            sh 'pwd'
+                            sh './compile.sh'
                         }
 
-                    } else if (env.CHANGE_ID) {
+
+
+                    } 
+                    else if (env.CHANGE_ID) {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
                         // Add actions specific to pull requests targeting main
-                    } else {
-                     
+                    } 
+                    else 
+                    {
                         echo "This is not the main branch or a pull request."
                         sh 'chmod +x folderNames.sh'
-                        sh './folderNames.sh'
+                         sh './folderNames.sh'
+
+                        // Add actions for other branches
                     }
-                //end
-                              
+                }
+
+                
             }
         }
         
