@@ -99,7 +99,7 @@ pipeline {
                 //start
                 script {
                     if (env.BRANCH_NAME == 'main') {
-                        echo "Building the main branch directly."
+                        // echo "Building the main branch directly."
                         sh 'git rev-parse HEAD > .cache'
 
                         //working with cache
