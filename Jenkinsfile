@@ -109,7 +109,7 @@ pipeline {
                     {
                         echo "This is not the main branch or a pull request."
                         sh 'chmod +x folderNames.sh'
-                         sh './folderNames.sh'
+                         sh './compile.sh'
 
                         // Add actions for other branches
                     }
