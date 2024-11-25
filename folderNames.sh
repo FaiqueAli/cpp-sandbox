@@ -19,3 +19,4 @@ done
 # Run the master Makefile in the root directory
 echo "Running the master Makefile in the root directory."
 make
+
