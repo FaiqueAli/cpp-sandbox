@@ -118,7 +118,7 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
 
-                        //working with cache
+                       //working with cache
                         cache(caches: [
                             arbitraryFileCache(
                                 path: "$WORKSPACE",
@@ -128,10 +128,10 @@ pipeline {
                         ],
                             defaultBranch: "main"
                         )
-                        
-                        echo "Compile feature branch"
-                        compileCode()
-                        // Add actions for other branches
+                        {
+                        // Compile the feature branch
+                            compileCode()
+                        }
                     }
                 }
                 //end
