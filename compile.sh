@@ -4,3 +4,5 @@
 # make
 cd ../main_logic
 make
+
+./main_logic.cpp
