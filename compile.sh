@@ -5,6 +5,7 @@
 cd ../main_logic
 make
 
+echo 'this is the compile.sh script'
 pwd
 ls
 
