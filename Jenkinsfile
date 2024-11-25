@@ -119,15 +119,15 @@ pipeline {
                     } else {
 
                        //working with cache
-                        cache(caches: [
-                            arbitraryFileCache(
-                                path: "$WORKSPACE",
-                                includes: "**/*.a",
-                                cacheValidityDecidingFile: ".cache"
-                            )                       
-                        ]
+                        // cache(caches: [
+                        //     arbitraryFileCache(
+                        //         path: "$WORKSPACE",
+                        //         includes: "**/*.a",
+                        //         cacheValidityDecidingFile: ".cache"
+                        //     )                       
+                        // ]
                         // , defaultBranch: "main"
-                        )
+                        // )
                         {
                         // Compile the feature branch
                             compileCode()
