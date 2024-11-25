@@ -4,7 +4,8 @@
 
 # Define the main branch and the feature branch (current branch)
 MAIN_BRANCH="origin/main"
-FEATURE_BRANCH="origin/$(git rev-parse --abbrev-ref HEAD)"
+FEATURE_BRANCH="origin/feature/cache"
+# FEATURE_BRANCH="origin/$(git rev-parse --abbrev-ref HEAD)"
 
 echo "main branch name: $MAIN_BRANCH"
 echo "feature branch name: $FEATURE_BRANCH"
