@@ -110,17 +110,25 @@ pipeline {
                         )
                         {
                         // Compile the C++ program
-                            sh 'chmod -R a+rwx $WORKSPACE/'
-                            sh 'pwd'
-                            sh './compile.sh'
+                            compileCode()
                         }
-
-
 
                     } else if (env.CHANGE_ID) {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
                         // Add actions specific to pull requests targeting main
                     } else {
+
+                        //working with cache
+                        cache(caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: ".cache"
+                            )                       
+                        ],
+                            defaultBranch: "main"
+                        )
+                        
                         echo "Compile feature branch"
                         compileCode()
                         // Add actions for other branches
