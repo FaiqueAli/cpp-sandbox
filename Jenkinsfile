@@ -118,6 +118,7 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
 
+                        sh 'git checkout 'env.BRANCH_NAME
                        //working with cache
                         // cache(caches: [
                         //     arbitraryFileCache(
