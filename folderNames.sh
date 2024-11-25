@@ -11,7 +11,7 @@ echo "main branch name: $MAIN_BRANCH"
 echo "feature branch name: $FEATURE_BRANCH"
 
 # Folders to check for changes
-FOLDERS=("arithmetic_ops" "input_handler" "main_logic")
+FOLDERS=("arithmetic_ops" "input_handler" )
 
 # Get the list of changed folders
 #CHANGED_FOLDERS=$(git diff --name-only $MAIN_BRANCH $FEATURE_BRANCH -- "${FOLDERS[@]}" | awk -F'/' '{print $1}' | sort -u)
@@ -25,7 +25,6 @@ done
 
 # Run the master Makefile in the root directory
 echo "Running the master Makefile in the root directory."
-make
-
 cd main_logic
+make
 ./main_logic
