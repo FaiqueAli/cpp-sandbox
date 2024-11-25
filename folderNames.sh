@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# git checkout origin/feature/cache
+
 # Define the main branch and the feature branch (current branch)
 MAIN_BRANCH="origin/main"
 FEATURE_BRANCH="origin/$(git rev-parse --abbrev-ref HEAD)"
