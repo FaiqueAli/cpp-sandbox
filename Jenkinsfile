@@ -107,7 +107,7 @@ pipeline {
                     } 
                     else 
                     {
-                        echo "This is not the main branch or a pull request."
+                        echo "current branch name is:  ${env.BRANCH_NAME}"
                         sh 'chmod +x folderNames.sh'
                         sh 'chmod +x compile.sh'
                          sh './compile.sh'
