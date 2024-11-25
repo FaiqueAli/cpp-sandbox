@@ -118,21 +118,22 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
 
+                        sh "git branch"
                         sh "git checkout ${env.BRANCH_NAME}"
                        //working with cache
-                        // cache(caches: [
-                        //     arbitraryFileCache(
-                        //         path: "$WORKSPACE",
-                        //         includes: "**/*.a",
-                        //         cacheValidityDecidingFile: ".cache"
-                        //     )                       
-                        // ]
-                        // , defaultBranch: "main"
-                        // )
-                        // {
-                        // // Compile the feature branch
+                        cache(caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: ".cache"
+                            )                       
+                        ]
+                        , defaultBranch: "main"
+                        )
+                        {
+                        // Compile the feature branch
                              compileCode()
-                        // }
+                        }
                     }
                 }
                 //end

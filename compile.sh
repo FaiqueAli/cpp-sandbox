@@ -1,8 +1,9 @@
-# # cd arithmetic_ops
-# # make
-# # cd ../input_handler
-# # make
-
-# cd ../main_logic
+# cd arithmetic_ops
 # make
-# ./main_logic.cpp
+# cd ../input_handler
+# make
+
+cd main_logic
+make
+
+./main_logic.cpp
