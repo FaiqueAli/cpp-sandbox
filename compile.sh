@@ -5,4 +5,7 @@
 cd ../main_logic
 make
 
+pwd
+ls
+
 ./main_logic.cpp
