@@ -56,7 +56,7 @@ pipeline {
         }    
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
-        CACHE_KEY = 'cache_master_objects'
+        CHANGED_FOLDERS = ""
     }
     
     // cache(maxCacheSize: 500, defaultBranch: 'main', caches: [
