@@ -69,11 +69,11 @@ pipeline {
             }
         }
         stage('Build') {
-            when {
-                branch 'main' // Only for master branch
-            }
+            // when {
+            //     branch 'main' // Only for master branch
+            // }
             
-            steps {
+            //steps {
 
                 //start
                 script {
@@ -116,7 +116,7 @@ pipeline {
                 }
 
                 
-            }
+            //}
         }
         
         }
