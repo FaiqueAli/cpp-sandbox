@@ -4,6 +4,9 @@
 MAIN_BRANCH="origin/main"
 FEATURE_BRANCH="origin/$(git rev-parse --abbrev-ref HEAD)"
 
+echo "main branch name: $MAIN_BRANCH"
+echo "feature branch name: $FEATURE_BRANCH"
+
 # Folders to check for changes
 FOLDERS=("arithmetic_ops" "input_handler" "main_logic")
 
