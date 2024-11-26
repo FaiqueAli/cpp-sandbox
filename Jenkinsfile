@@ -121,7 +121,7 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
                         echo "This is not the main branch or a pull request."
-                        chmod +x folderNames.sh
+                        // chmod +x folderNames.sh
                          sh './folderNames.sh'
 
                         // Add actions for other branches
