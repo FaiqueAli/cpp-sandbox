@@ -11,6 +11,7 @@ int main() {
 
     cout << "Value getInputA(): "<< getInputA() << endl; 
     cout << "Value getInputB(): "<< getInputB() << endl; 
+    cout << "this is from main cpp file " << endl; 
 
     int result;
     switch(op) {
