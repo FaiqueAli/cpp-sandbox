@@ -22,4 +22,3 @@ pwd
 # chmod 777 main_logic
 # echo 'the result is ' 
 # ./main_logic
-
