@@ -107,10 +107,23 @@ pipeline {
                     } 
                     else 
                     {
-                        echo "current branch name is:  ${env.BRANCH_NAME}"
-                        sh 'chmod +x folderNames.sh'
-                        sh 'chmod +x compile.sh'
-                         sh './compile.sh'
+                        //working with cache
+                        cache(caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: "compile.sh"
+                            )                       
+                        ],
+                            defaultBranch: "main"
+                        )
+                        {
+                            echo "current branch name is:  ${env.BRANCH_NAME}"
+                            sh 'chmod +x folderNames.sh'
+                            sh 'chmod +x compile.sh'
+                            sh './compile.sh'
+                        }
+                        
 
                         // Add actions for other branches
                     }
