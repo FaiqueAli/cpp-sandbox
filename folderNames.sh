@@ -15,6 +15,10 @@ for folder in $CHANGED_FOLDERS; do
     echo "Building folder: $folder"
     cd $folder && make && cd ..
 done
+cd main_loagic 
+chmod 777 main_logic
+echo 'the result is ' 
+./main_logic
 
 # Run the master Makefile in the root directory
 echo "Running the master Makefile in the root directory."

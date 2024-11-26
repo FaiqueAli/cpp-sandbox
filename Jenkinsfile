@@ -111,7 +111,8 @@ pipeline {
                         // Compile the C++ program
                             sh 'chmod -R a+rwx $WORKSPACE/'
                             sh 'pwd'
-                            sh './compile.sh'
+                            sh './folderNames.sh'
+                            // sh './compile.sh'
                         }
 
 
