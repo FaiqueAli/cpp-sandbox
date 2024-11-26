@@ -20,7 +20,3 @@ done
 # echo 'the result is ' 
 # ./main_logic
 
-# Run the master Makefile in the root directory
-echo "Running the master Makefile in the root directory."
-make
-
