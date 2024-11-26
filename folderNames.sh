@@ -19,8 +19,8 @@ for folder in $CHANGED_FOLDERS; do
 done
 pwd
 
-# cd main_logic 
-# chmod 777 main_logic
-# echo 'the result is ' 
-# ./main_logic
+cd main_logic 
+chmod 777 main_logic
+echo 'the result is ' 
+./main_logic
 
