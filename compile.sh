@@ -8,6 +8,6 @@ echo 'inside script'
 # cd main_logic
 
 make
-
+chmod 777 main_logic
 ./main_logic
 
