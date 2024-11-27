@@ -68,6 +68,18 @@ pipeline {
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
+        //  stage('Setup Cache') {
+        //     when {
+        //         expression { env.BRANCH_NAME != 'main' } // For feature branches
+        //     }
+        //     steps {
+        //         cache(maxCacheSize: 50, caches: [
+        //             cache(path: '$WORKSPACE/arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
+        //             cache(path: '$WORKSPACE/input_handler', key: "${CACHE_KEY}/input_handler"),
+        //             // cache(path: 'folder3', key: "${CACHE_KEY}/folder3")
+        //         ])
+        //     }
+        // }
         stage('Build') {
             // when {
             //     branch 'main' // Only for master branch
@@ -79,7 +91,7 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
-                        // sh 'git rev-parse HEAD > .cache'
+                        sh 'git rev-parse HEAD > .cache'
 
                         //working with cache
                         cache(caches: [
@@ -95,24 +107,22 @@ pipeline {
                         // Compile the C++ program
                             sh 'chmod -R a+rwx $WORKSPACE/'
                             sh 'pwd'
+                            // sh './folderNames.sh'
                             sh './compile.sh'
                         }
-                    } 
-                    else if (env.CHANGE_ID) {
+
+                    } else if (env.CHANGE_ID) {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
                         // Add actions specific to pull requests targeting main
-                    } 
-                    else 
-                    {
-                        //working with cache
-                        echo "current branch name is:  ${env.BRANCH_NAME}"
-                        sh 'chmod +x folderNames.sh'
-                        sh 'chmod +x compile.sh'
-                        sh './compile.sh'
+                    } else {
+                        echo "This is not the main branch or a pull request."
+                        // chmod +x folderNames.sh
+                         sh './folderNames.sh'
+
                         // Add actions for other branches
                     }
                 }
-
+                //end
                 
             }
         }

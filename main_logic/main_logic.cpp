@@ -9,9 +9,9 @@ int main() {
     int b = getInputB();
     char op = getOperator();
 
-    cout << "Value getInputA(): "<< getInputA() << endl; 
-    cout << "Value getInputB(): "<< getInputB() << endl; 
-    cout << "this is from main cpp file " << endl; 
+    cout << "getInputB() " << getInputB()<< endl;
+    cout << "getInputA() " << getInputA() << endl;
+
 
     int result;
     switch(op) {
@@ -26,4 +26,6 @@ int main() {
 
     cout << "Result: " << result << endl;
     return 0;
+
+    
 }
