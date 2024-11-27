@@ -117,11 +117,11 @@ pipeline {
                     } else {
                         echo "This is not the main branch or a pull request."
                         script{
-                            chmod +x folderNames.sh
+                            sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
                         } 
 
-                        // Add actions for other branches
+                        
                     }
                 }
                 //end
