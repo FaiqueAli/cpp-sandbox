@@ -97,9 +97,6 @@ pipeline {
                             sh 'pwd'
                             sh './compile.sh'
                         }
-
-
-
                     } 
                     else if (env.CHANGE_ID) {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
@@ -108,23 +105,10 @@ pipeline {
                     else 
                     {
                         //working with cache
-                        cache(caches: [
-                            arbitraryFileCache(
-                                path: "$WORKSPACE",
-                                includes: "**/*.a",
-                                cacheValidityDecidingFile: "compile.sh"
-                            )                       
-                        ],
-                            defaultBranch: "main"
-                        )
-                        {
-                            echo "current branch name is:  ${env.BRANCH_NAME}"
-                            sh 'chmod +x folderNames.sh'
-                            sh 'chmod +x compile.sh'
-                            sh './compile.sh'
-                        }
-                        
-
+                        echo "current branch name is:  ${env.BRANCH_NAME}"
+                        sh 'chmod +x folderNames.sh'
+                        sh 'chmod +x compile.sh'
+                        sh './compile.sh'
                         // Add actions for other branches
                     }
                 }
