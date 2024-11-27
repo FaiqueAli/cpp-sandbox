@@ -138,7 +138,7 @@ pipeline {
                 archiveArtifacts artifacts: '**/*.a', fingerprint: true
                 cleanWs()
                 }
-            cleanWs()
+            
         }
     
     }
