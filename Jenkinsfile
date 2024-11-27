@@ -64,6 +64,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                echo "checkout branch"
                 checkout scmGit(branches: [[name: '(*/feature/cache']], 
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
@@ -117,6 +118,8 @@ pipeline {
                     } else {
                         echo "This is not the main branch or a pull request."
                         script{
+                            sh 'git branch'
+                            sh 'git log -1'
                             sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
                         } 
