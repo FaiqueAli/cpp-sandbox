@@ -65,7 +65,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo "checkout branch"
-                checkout scmGit(branches: [[name: commitHash]], 
+                checkout scmGit(branches: [[name: '(*/feature/cache)']], 
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
@@ -136,7 +136,10 @@ pipeline {
     post {
             always {
                 archiveArtifacts artifacts: '**/*.a', fingerprint: true
+                cleanWs()
                 }
+            cleanWs()
         }
     
     }
+
