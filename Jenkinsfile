@@ -98,13 +98,14 @@ pipeline {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
                         cache(caches: [
-                                arbitraryFileCache(
-                                    path: "$WORKSPACE",
-                                    includes: "**/*.a",
-                                    cacheValidityDecidingFile: ".cache"
-                                )],
-                                defaultBranch: "main"
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: ".cache"
                             )
+                        ],
+                            defaultBranch: "main"
+                        )
                         // Compile the C++ program
                             sh 'chmod -R a+rwx $WORKSPACE/'
                             // sh './folderNames.sh'
