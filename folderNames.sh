@@ -15,11 +15,13 @@ CHANGED_FOLDERS=$(git diff --name-only $MAIN_BRANCH HEAD~1 -- "${FOLDERS[@]}" | 
 pwd
 for folder in $CHANGED_FOLDERS; do
     echo "Building folder: $folder"
-    cd $folder && make && cd ..
+    cd $folder && make && pwd && cd ..
 done
-cd $main_logic_folder 
+pwd
+ls
+cd "$main_logic_folder"
 make
-chmod 777 $main_logic_folder 
+chmod 777 "$main_logic_folder"
 echo 'the result is ' 
 ./main_logic
 
