@@ -109,7 +109,8 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
-                        callCache()
+                        sh """${callCache()} """
+                        
                         {
                         // Compile the C++ program
                             sh 'chmod -R a+rwx $WORKSPACE/'
@@ -123,7 +124,7 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
                         echo "This is not the main branch or a pull request."
-                        callCache()
+                        sh """${callCache()} """
                         // chmod +x folderNames.sh
                          sh './folderNames.sh'
                         // Add actions for other branches
