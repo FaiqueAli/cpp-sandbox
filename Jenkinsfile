@@ -38,6 +38,7 @@
 //         }
 //     }
 // }
+
 pipeline {
     // agent any
     agent {
@@ -93,8 +94,27 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
-
-                        //working with cache
+                        cache(caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: ".cache"
+                            )
+                        ],
+                            defaultBranch: "main"
+                        )
+                        {
+                            // Compile the C++ program
+                            sh 'chmod -R a+rwx $WORKSPACE/'
+                            // sh './folderNames.sh'
+                            sh './compile.sh'
+                        }
+                        
+                    } else if (env.CHANGE_ID) {
+                        echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
+                        // Add actions specific to pull requests targeting main
+                    } else {
+                        echo "This is not the main branch or a pull request."
                         cache(caches: [
                             arbitraryFileCache(
                                 path: "$WORKSPACE",
@@ -105,30 +125,14 @@ pipeline {
                             defaultBranch: "main"
                         )
                         {
-                        // Compile the C++ program
-                            sh 'chmod -R a+rwx $WORKSPACE/'
-                            sh 'pwd'
-                            // sh './folderNames.sh'
-                            sh './compile.sh'
-                        }
-
-                    } else if (env.CHANGE_ID) {
-                        echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
-                        // Add actions specific to pull requests targeting main
-                    } else {
-                        echo "This is not the main branch or a pull request."
-                        script{
-                            sh 'git branch'
-                            sh 'git log -1'
                             sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
-                        } 
-
+                        // Add actions for other branches
+                        }
                         
                     }
                 }
                 //end
-                
             }
         }
         
