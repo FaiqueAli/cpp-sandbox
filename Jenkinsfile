@@ -41,15 +41,15 @@
 def callCache()
 {
     //working with cache
-                        cache(caches: [
-                            arbitraryFileCache(
-                                path: "$WORKSPACE",
-                                includes: "**/*.a",
-                                cacheValidityDecidingFile: ".cache"
-                            )                       
-                        ],
-                            defaultBranch: "main"
-                        )
+    cache(caches: [
+        arbitraryFileCache(
+            path: "$WORKSPACE",
+            includes: "**/*.a",
+            cacheValidityDecidingFile: ".cache"
+        )                       
+    ],
+        defaultBranch: "main"
+    )
 }
 pipeline {
     // agent any
@@ -109,7 +109,7 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
-                        sh """${callCache()} """
+                        callCache()
                         // Compile the C++ program
                             sh 'chmod -R a+rwx $WORKSPACE/'
                             sh 'pwd'
