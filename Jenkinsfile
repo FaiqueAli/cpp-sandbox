@@ -118,18 +118,21 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
                         echo "This is not the main branch or a pull request."
-                        //  cache(caches: [
-                        //     arbitraryFileCache(
-                        //         path: "$WORKSPACE",
-                        //         includes: "**/*.a",
-                        //         cacheValidityDecidingFile: ".cache"
-                        //     )                       
-                        // ],
-                        //     defaultBranch: "main"
-                        // )
-                        // chmod +x folderNames.sh
-                         sh './folderNames.sh'
+                        cache(caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: ".cache"
+                            )                       
+                        ],
+                            defaultBranch: "main"
+                        )
+                        {
+                            sh 'chmod +x folderNames.sh'
+                            sh './folderNames.sh'
                         // Add actions for other branches
+                        }
+                        
                     }
                 }
                 //end
