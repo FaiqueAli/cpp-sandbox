@@ -95,7 +95,7 @@ pipeline {
                 script {
                     if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
-                        sh 'git rev-parse HEAD > .cache'
+                        // sh 'git rev-parse HEAD > .cache'
 
                         //working with cache
                         cache(caches: [
@@ -111,8 +111,8 @@ pipeline {
                         // Compile the C++ program
                             sh 'chmod -R a+rwx $WORKSPACE/'
                             sh 'pwd'
-                            // sh './folderNames.sh'
-                            sh './compile.sh'
+                            sh './folderNames.sh'
+                            // sh './compile.sh'
                         }
 
                     } else if (env.CHANGE_ID) {
