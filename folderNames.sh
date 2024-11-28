@@ -3,7 +3,7 @@
 # Define the main branch and the feature branch (current branch)
 MAIN_BRANCH="origin/main"
 FEATURE_BRANCH="origin/$(git rev-parse --abbrev-ref HEAD)"
-
+main_logic_folder="main_logic"
 # Folders to check for changes
 FOLDERS=("arithmetic_ops" "input_handler")
 
@@ -17,9 +17,9 @@ for folder in $CHANGED_FOLDERS; do
     echo "Building folder: $folder"
     cd $folder && make && cd ..
 done
-cd main_logic 
+cd $main_logic_folder 
 make
-chmod 777 main_logic
+chmod 777 $main_logic_folder 
 echo 'the result is ' 
 ./main_logic
 
