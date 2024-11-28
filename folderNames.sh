@@ -12,10 +12,10 @@ CHANGED_FOLDERS=$(git diff --name-only $MAIN_BRANCH HEAD~1 -- "${FOLDERS[@]}" | 
 # CHANGED_FOLDERS=$(git diff --name-only $MAIN_BRANCH $FEATURE_BRANCH -- "${FOLDERS[@]}" | awk -F'/' '{print $1}' | sort -u)
 
 # Loop through each changed folder and run 'make' if there are changes
-pwd
+ls
 for folder in $CHANGED_FOLDERS; do
     echo "Building folder: $folder"
-    cd $folder && make && pwd && cd ..
+    cd $folder && make && cd ..
 done
 pwd
 ls
