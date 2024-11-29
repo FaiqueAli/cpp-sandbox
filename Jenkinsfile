@@ -132,7 +132,9 @@ pipeline {
                         
                                               
                             sh 'chmod +x folderNames.sh'
-                            sh './folderNames.sh'
+                            // sh './folderNames.sh'
+                            sh './compile.sh'
+
                     }
                         }
                         // cache(caches: [
