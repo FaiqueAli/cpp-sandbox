@@ -137,7 +137,10 @@ pipeline {
                         // ],
                         //     defaultBranch: "main"
                         // )
-                        BuildCache()
+                        script{
+                            BuildCache()
+                        }
+                        
                         {
                             sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
