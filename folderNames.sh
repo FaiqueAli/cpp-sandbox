@@ -5,7 +5,7 @@ MAIN_BRANCH="origin/main"
 FEATURE_BRANCH="origin/$(git rev-parse --abbrev-ref HEAD)"
 main_logic_folder="main_logic"
 # Folders to check for changes
-FOLDERS=("arithmetic_ops" "input_handler")
+FOLDERS=("arithmetic_ops" "input_handler" "main_logic")
 
 # Get the list of changed folders
 CHANGED_FOLDERS=$(git diff --name-only $MAIN_BRANCH HEAD~1 -- "${FOLDERS[@]}" | awk -F'/' '{print $1}' | sort -u)
@@ -17,11 +17,11 @@ for folder in $CHANGED_FOLDERS; do
     echo "Building folder: $folder"
     cd $folder && make && cd ..
 done
-pwd
-ls -ll
+# pwd
+# ls -ll
 cd "$main_logic_folder"
-make
-chmod 777 "$main_logic_folder"
+# make
+chmod 777 "main_logic"
 echo 'the result is ' 
 ./main_logic
 
