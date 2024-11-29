@@ -38,7 +38,7 @@
 //         }
 //     }
 // }
-def BuildCache()
+def buildCache()
 {
     cache(caches: [
             arbitraryFileCache(
@@ -107,7 +107,7 @@ pipeline {
                     // if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
-                        BuildCache()
+                        buildCache()
                         {
                             if (env.BRANCH_NAME == 'main') {
                         // Compile the C++ program
