@@ -104,25 +104,25 @@ pipeline {
 
                 //start
                 script {
-                    if (env.BRANCH_NAME == 'main') {
+                    // if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
-                        cache(caches: [
-                            arbitraryFileCache(
-                                path: "$WORKSPACE",
-                                includes: "**/*.a",
-                                cacheValidityDecidingFile: ".cache"
-                            )
-                        ],
-                            defaultBranch: "main"
-                        )
-                        {
-                            // Compile the C++ program
-                            sh 'chmod -R a+rwx $WORKSPACE/'
-                            // sh './folderNames.sh'
-                            sh './compile.sh'
-                        }
-                        
+                        BuildCache()
+                        // cache(caches: [
+                        //     arbitraryFileCache(
+                        //         path: "$WORKSPACE",
+                        //         includes: "**/*.a",
+                        //         cacheValidityDecidingFile: ".cache"
+                        //     )
+                        // ],
+                        //     defaultBranch: "main"
+                        // )
+                    if (env.BRANCH_NAME == 'main') {
+                        // Compile the C++ program
+                        sh 'chmod -R a+rwx $WORKSPACE/'
+                        // sh './folderNames.sh'
+                        sh './compile.sh'
+
                     } else if (env.CHANGE_ID) {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
                         // Add actions specific to pull requests targeting main
@@ -137,16 +137,9 @@ pipeline {
                         // ],
                         //     defaultBranch: "main"
                         // )
-                        script{
-                            BuildCache()
-                        }
-                        
-                        {
+                                              
                             sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
-                        // Add actions for other branches
-                        }
-                        
                     }
                 }
                 //end
