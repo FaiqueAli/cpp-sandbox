@@ -108,16 +108,8 @@ pipeline {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
                         BuildCache()
-                        // cache(caches: [
-                        //     arbitraryFileCache(
-                        //         path: "$WORKSPACE",
-                        //         includes: "**/*.a",
-                        //         cacheValidityDecidingFile: ".cache"
-                        //     )
-                        // ],
-                        //     defaultBranch: "main"
-                        // )
-                    if (env.BRANCH_NAME == 'main') {
+                        {
+                            if (env.BRANCH_NAME == 'main') {
                         // Compile the C++ program
                         sh 'chmod -R a+rwx $WORKSPACE/'
                         // sh './folderNames.sh'
@@ -141,6 +133,17 @@ pipeline {
                             sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
                     }
+                        }
+                        // cache(caches: [
+                        //     arbitraryFileCache(
+                        //         path: "$WORKSPACE",
+                        //         includes: "**/*.a",
+                        //         cacheValidityDecidingFile: ".cache"
+                        //     )
+                        // ],
+                        //     defaultBranch: "main"
+                        // )
+                    
                 }
                 //end
             }
