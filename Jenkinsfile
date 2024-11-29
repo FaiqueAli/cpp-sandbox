@@ -101,7 +101,7 @@ pipeline {
                             arbitraryFileCache(
                                 path: "$WORKSPACE",
                                 includes: "**/*.a",
-                                cacheValidityDecidingFile: ".cache"
+                                cacheValidityDecidingFile: ".cache" 
                             )
                         ],
                             defaultBranch: "main" 
