@@ -18,7 +18,7 @@ for folder in $CHANGED_FOLDERS; do
     cd $folder && make && cd ..
 done
 pwd
-ls
+ls -ll
 cd "$main_logic_folder"
 make
 chmod 777 "$main_logic_folder"
