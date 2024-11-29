@@ -38,6 +38,18 @@
 //         }
 //     }
 // }
+def BuildCache()
+{
+    cache(caches: [
+            arbitraryFileCache(
+            path: "$WORKSPACE",
+            includes: "**/*.a",
+            cacheValidityDecidingFile: ".cache"
+        )                       
+        ],
+            defaultBranch: "main"
+        )
+}
 
 pipeline {
     // agent any
@@ -116,15 +128,16 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
                         echo "This is not the main branch or a pull request."
-                        cache(caches: [
-                            arbitraryFileCache(
-                                path: "$WORKSPACE",
-                                includes: "**/*.a",
-                                cacheValidityDecidingFile: ".cache"
-                            )                       
-                        ],
-                            defaultBranch: "main"
-                        )
+                        // cache(caches: [
+                        //     arbitraryFileCache(
+                        //         path: "$WORKSPACE",
+                        //         includes: "**/*.a",
+                        //         cacheValidityDecidingFile: ".cache"
+                        //     )                       
+                        // ],
+                        //     defaultBranch: "main"
+                        // )
+                        BuildCache()
                         {
                             sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
