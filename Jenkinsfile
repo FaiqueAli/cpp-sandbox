@@ -107,7 +107,16 @@ pipeline {
                     // if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
-                        buildCache()
+                        // buildCache()
+                        cache(caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                cacheValidityDecidingFile: ".cache"
+                            )                       
+                        ],
+                            defaultBranch: "main"
+                        )
                         {
                             if (env.BRANCH_NAME == 'main') {
                         // Compile the C++ program
@@ -120,15 +129,7 @@ pipeline {
                         // Add actions specific to pull requests targeting main
                     } else {
                         echo "This is not the main branch or a pull request."
-                        // cache(caches: [
-                        //     arbitraryFileCache(
-                        //         path: "$WORKSPACE",
-                        //         includes: "**/*.a",
-                        //         cacheValidityDecidingFile: ".cache"
-                        //     )                       
-                        // ],
-                        //     defaultBranch: "main"
-                        // )
+                        
                                               
                             sh 'chmod +x folderNames.sh'
                             sh './folderNames.sh'
