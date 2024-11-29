@@ -99,8 +99,7 @@ pipeline {
             // when {
             //     branch 'main' // Only for master branch
             // }
-            
-            
+                        
             steps {
 
                 //start
