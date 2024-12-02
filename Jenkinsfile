@@ -111,7 +111,7 @@ pipeline {
                             sh 'chmod -R a+rwx $WORKSPACE/'
                             // sh './folderNames.sh'
                             sh './compile.sh'
-                        } 
+                        }  
                         
                     } else if (env.CHANGE_ID) {
                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
