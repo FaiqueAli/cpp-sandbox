@@ -111,13 +111,13 @@ pipeline {
                         def updateCache = (env.BRANCH_NAME == 'main') ? true : false
                         // buildCache()
                         cache(skipSave: !updateCache, 
-                        //   caches: [
-                        //     arbitraryFileCache(
-                        //         path: "$WORKSPACE",
-                        //         includes: "**/*.a",
-                        //         cacheValidityDecidingFile: ".cache"
-                        //     )                       
-                        // ],
+                          caches: [
+                            arbitraryFileCache(
+                                path: "$WORKSPACE",
+                                includes: "**/*.a",
+                                // cacheValidityDecidingFile: ".cache"
+                            )                       
+                        ],
                             defaultBranch: "main"
                         )
                         {
