@@ -110,7 +110,7 @@ pipeline {
                         sh 'git rev-parse origin/main > .cache'
                         def updateCache = (env.BRANCH_NAME == 'main') ? true : false
                         // buildCache()
-                        cache(skipSave: !updateCache, skipRestore:true, 
+                        cache(skipSave: !updateCache, 
                         //   caches: [
                         //     arbitraryFileCache(
                         //         path: "$WORKSPACE",
