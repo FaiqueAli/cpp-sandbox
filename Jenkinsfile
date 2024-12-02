@@ -85,31 +85,32 @@ pipeline {
         }
         //  stage('Setup Cache') {
         //     when {
-        //         expression { env.BRANCH_NAME != 'main' } // For feature branches
+        //         expression { env.BRANCH_NAME == 'main' } // For feature branches
         //     }
         //     steps {
-        //         cache(maxCacheSize: 50, caches: [
-        //             cache(path: '$WORKSPACE/arithmetic_ops', key: "${CACHE_KEY}/arithmetic_ops"),
-        //             cache(path: '$WORKSPACE/input_handler', key: "${CACHE_KEY}/input_handler"),
-        //             // cache(path: 'folder3', key: "${CACHE_KEY}/folder3")
-        //         ])
+        //         sh 'git rev-parse origin/main > .cache'
+        //                 // buildCache()
+        //             cache(skipSave: true, caches: [
+        //                 arbitraryFileCache(
+        //                     path: "$WORKSPACE",
+        //                     includes: "**/*.a",
+        //                     cacheValidityDecidingFile: ".cache"
+        //                 )                       
+        //             ],
+        //                 defaultBranch: "main"
+        //             )
         //     }
         // } 
         stage('Build') {
-            // when {
-            //     branch 'main' // Only for master branch
-            // } 
-                        
             steps {
-
-                // def updateCache = (env.BRANCH_NAME == 'main') ? true : false
                 //start
                 script {
                     // if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
+                        def updateCache = (env.BRANCH_NAME == 'main') ? true : false
                         // buildCache()
-                        cache(skipSave: true, caches: [
+                        cache(skipSave: !updateCache, caches: [
                             arbitraryFileCache(
                                 path: "$WORKSPACE",
                                 includes: "**/*.a",
