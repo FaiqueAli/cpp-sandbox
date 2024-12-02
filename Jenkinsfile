@@ -95,6 +95,7 @@ pipeline {
         //         ])
         //     }
         // } 
+        
         stage('Build') {
             // when {
             //     branch 'main' // Only for master branch
