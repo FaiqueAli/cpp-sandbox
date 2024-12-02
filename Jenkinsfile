@@ -97,7 +97,8 @@ pipeline {
                     if (env.BRANCH_NAME == 'main') {
                         // echo "Building the main branch directly."
                         sh 'git rev-parse origin/main > .cache'
-                        cache(caches: [
+                        def updateCache = (env.BRANCH_NAME == 'main') ? true : false
+                        cache(skipSave: !updateCache, caches: [
                             arbitraryFileCache(
                                 path: "$WORKSPACE",
                                 includes: "**/*.a",
