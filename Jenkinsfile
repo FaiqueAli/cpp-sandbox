@@ -114,7 +114,7 @@ pipeline {
                             defaultBranch: "main"
                         )
                         {
-                            if (env.BRANCH_NAME == 'main') {
+                            if (isMainBranch || isReleaseBranch) {
                         // Compile the C++ program
                         sh 'chmod -R a+rwx $WORKSPACE/'
                         // sh './folderNames.sh'
