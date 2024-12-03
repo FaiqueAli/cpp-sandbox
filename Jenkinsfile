@@ -137,8 +137,12 @@ pipeline {
                 //end
             }
         }
+        }    
+    }
+    post{
+            always {
+                archiveArtifacts artifacts: '**/*.a', fingerprint: true
+                cleanWs()
+                }
         }
-    
-    
-}
 }
