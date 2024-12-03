@@ -83,83 +83,108 @@ pipeline {
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
-        //  stage('Setup Cache') { 
-        //     when {
-        //         expression { env.BRANCH_NAME == 'main' } // For feature branches
-        //     }
+        // stage('Build') {
         //     steps {
-        //         sh 'git rev-parse origin/main > .cache'
-        //                 // buildCache()
-        //             cache(skipSave: true, caches: [
-        //                 arbitraryFileCache(
-        //                     path: "$WORKSPACE",
-        //                     includes: "**/*.a",
-        //                     cacheValidityDecidingFile: ".cache"
-        //                 )                       
-        //             ],
-        //                 defaultBranch: "main"
-        //             )
-        //     }
-        // }  
-        stage('Build') {
-            steps {
-                //start
-                script {
-                    // if (env.BRANCH_NAME == 'main') {
-                        // echo "Building the main branch directly."
-                        sh 'git rev-parse origin/main > .cache'
-                         // Determine whether to save/update the cache based on the branch
-                        def isMainBranch = (env.BRANCH_NAME == 'main')
-                        def cacheSave = isMainBranch // Save the cache only for the main branch
+        //         //start
+        //         script {
+        //             // if (env.BRANCH_NAME == 'main') {
+        //                 // echo "Building the main branch directly."
+        //                 sh 'git rev-parse origin/main > .cache'
+        //                  // Determine whether to save/update the cache based on the branch
+        //                 def isMainBranch = (env.BRANCH_NAME == 'main')
+        //                 def cacheSave = isMainBranch // Save the cache only for the main branch
                         
-                        // Job Cacher plugin call
-                        cache(
-                            skipSave: !cacheSave, // Skip saving the cache for non-main branches
-                            caches: [
-                                arbitraryFileCache(
-                                    path: "$WORKSPACE",
-                                    includes: "**/*.a",
-                                    cacheValidityDecidingFile: isMainBranch ? '.cache' : null // Use '.cache' only for main
-                        )],
-                            defaultBranch: "main"
-                        )
-                        {
-                            if (env.BRANCH_NAME == 'main') {
-                        // Compile the C++ program
-                        sh 'chmod -R a+rwx $WORKSPACE/'
-                        // sh './folderNames.sh'
-                        sh './compile.sh'
+        //                 // Job Cacher plugin call
+        //                 cache(
+        //                     skipSave: !cacheSave, // Skip saving the cache for non-main branches
+        //                     caches: [
+        //                         arbitraryFileCache(
+        //                             path: "$WORKSPACE",
+        //                             includes: "**/*.a",
+        //                             cacheValidityDecidingFile: isMainBranch ? '.cache' : null // Use '.cache' only for main
+        //                 )],
+        //                     defaultBranch: "main"
+        //                 )
+        //                 {
+        //                     if (env.BRANCH_NAME == 'main') {
+        //                 // Compile the C++ program
+        //                 sh 'chmod -R a+rwx $WORKSPACE/'
+        //                 // sh './folderNames.sh'
+        //                 sh './compile.sh'
 
-                    } else if (env.CHANGE_ID) {
-                        echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
-                        // Add actions specific to pull requests targeting main
-                    } else {
-                        echo "This is not the main branch or a pull request."
+        //             } else if (env.CHANGE_ID) {
+        //                 echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
+        //                 // Add actions specific to pull requests targeting main
+        //             } else {
+        //                 echo "This is not the main branch or a pull request."
                         
                                               
-                            // sh 'chmod +x folderNames.sh'
-                            // sh './folderNames.sh'
-                            sh 'chmod +x compile.sh'
-                            sh './compile.sh'
+        //                     // sh 'chmod +x folderNames.sh'
+        //                     // sh './folderNames.sh'
+        //                     sh 'chmod +x compile.sh'
+        //                     sh './compile.sh'
 
-                    }
-                        }
-                        // cache(caches: [
-                        //     arbitraryFileCache(
-                        //         path: "$WORKSPACE",
-                        //         includes: "**/*.a",
-                        //         cacheValidityDecidingFile: ".cache"
-                        //     )
-                        // ],
-                        //     defaultBranch: "main"
-                        // )
-                    
+        //             }
+        //         }
+        //         //end
+        //     }
+        // }
+        // }
+    stage('Build') {
+        steps {
+            script {
+                // Save the hash of the main branch to the cache file
+                sh 'git rev-parse origin/main > .cache'
+                
+                // Determine the type of branch
+                def isMainBranch = (env.BRANCH_NAME == 'main')
+                def isReleaseBranch = (env.BRANCH_NAME?.startsWith('release/'))
+
+                // Cache save logic
+                def cacheSave = isMainBranch || isReleaseBranch // Save cache for main or release branches
+                
+                // Clear cache for release branches
+                if (isReleaseBranch) {
+                    echo "On a release branch. Clearing existing cache."
+                    sh "rm -rf $WORKSPACE/**" // Ensure all existing cache is cleared
                 }
-                //end
+
+                // Job Cacher plugin call
+                cache(
+                    skipSave: !cacheSave, // Skip saving the cache for feature branches
+                    caches: [
+                        arbitraryFileCache(
+                            path: "$WORKSPACE",
+                            includes: "**/*.a",
+                            cacheValidityDecidingFile: isMainBranch || isReleaseBranch ? '.cache' : null // Use '.cache' for main or release branches
+                        )
+                    ],
+                    defaultBranch: "main"
+                ) {
+                    // Perform actions based on the branch
+                    if (isMainBranch) {
+                        echo "Building on the main branch."
+                        // Compile the C++ program
+                        sh 'chmod -R a+rwx $WORKSPACE/'
+                        sh './compile.sh'
+                    } else if (isReleaseBranch) {
+                        echo "Building on a release branch. Fresh cache will be created."
+                        // Compile the C++ program
+                        sh 'chmod -R a+rwx $WORKSPACE/'
+                        sh './compile.sh'
+                    } else if (env.CHANGE_ID) {
+                        echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
+                        // Add actions specific to pull requests targeting the main branch
+                    } else {
+                        echo "This is not the main branch, release branch, or a pull request."
+                        sh 'chmod +x compile.sh'
+                        sh './compile.sh'
+                    }
+                }
             }
         }
-        
-        }
+    }
+    
     post {
             always {
                 archiveArtifacts artifacts: '**/*.a', fingerprint: true
