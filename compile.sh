@@ -11,5 +11,4 @@ make
 chmod 777 main_logic
 ./main_logic
 
-sleep 70
-
+sleep 100
