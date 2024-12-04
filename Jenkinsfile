@@ -96,7 +96,8 @@ pipeline {
                             caches: [
                                 arbitraryFileCache(
                                     path: "$WORKSPACE",
-                                    includes: "**/libarithmetic_ops.a",
+                                    // includes: "**/libarithmetic_ops.a",
+                                    includes: "compile.sh",
                                     cacheValidityDecidingFile: isMainBranch || isReleaseBranch ? '.cache' : null // Use '.cache' only for main
                         )],
                             defaultBranch: "main"
