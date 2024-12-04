@@ -108,7 +108,7 @@ pipeline {
                             caches: [
                                 arbitraryFileCache(
                                     path: "$WORKSPACE",
-                                    includes: "**/*.a",
+                                    includes: "**/arithmetic_ops.a",
                                     cacheValidityDecidingFile: isMainBranch || isReleaseBranch ? '.cache' : null // Use '.cache' only for main
                         )],
                             defaultBranch: "main"
