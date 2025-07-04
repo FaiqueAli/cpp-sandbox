@@ -73,6 +73,7 @@ pipeline {
                     sh 'echo "Logging in as $PASSWORD"'
                 }
             }
+        }
         
         stage('Checkout') {
             steps {
