@@ -58,10 +58,21 @@ pipeline {
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
         CHANGED_FOLDERS = ""
+         MY_USER = credentials('test') // Use this only if using secret text
     }
     
       
     stages {
+
+        stage('Login') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'test', 
+                                                  usernameVariable: 'USERNAME', 
+                                                  passwordVariable: 'PASSWORD')]) {
+                    sh 'echo "Logging in as $USERNAME"'
+                    sh 'echo "Logging in as $PASSWORD"'
+                }
+            }
         
         stage('Checkout') {
             steps {
