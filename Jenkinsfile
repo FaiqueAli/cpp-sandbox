@@ -127,18 +127,18 @@ pipeline {
                 //end
             }
         }
-        // stage('Test Run') {
-        //     steps {
-        //         // Run the calculator application for a basic test
-        //         sh './calculator'
-        //     }
-        // }
-        // stage('Clean Up') {
-        //     steps {
-        //         // Clean the build files
-        //         sh 'make clean'
-        //     }
-        // }
+        stage('Test Run') {
+            steps {
+                // Run the calculator application for a basic test
+                sh './calculator'
+            }
+        }
+        stage('Clean Up') {
+            steps {
+                // Clean the build files
+                sh 'make clean'
+            }
+        }
         
         }
     post {
