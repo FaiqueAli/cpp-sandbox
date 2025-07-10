@@ -81,21 +81,36 @@ pipeline {
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
-        stage('lint Dockerfile') {
+        stage('Scan for Secrets') {
             steps {
-                // sh 'docker run --rm -i hadolint/hadolint < Dockerfile'
-                 script {
-                    // Run hadolint container on the Dockerfile in workspace
-                    def result = sh(script: '''
-                        docker run --rm -i hadolint/hadolint < Dockerfile
-                    ''', returnStatus: true)
-
-                    if (result != 0) {
-                        error "Hadolint found issues in Dockerfile!"
+                script {
+                    catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                        sh '''
+                            curl -sL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_$(uname -s | tr '[:upper:]' '[:lower:]')_x64.tar.gz -o gitleaks.tar.gz
+                            tar -xvzf gitleaks.tar.gz
+                            chmod +x gitleaks*       
+                            mv gitleaks* gitleaks    
+                            ./gitleaks detect --source=. --report-format=json --report-path=$GITLEAKS_REPORT --exit-code 1
+                            '''
                     }
                 }
             }
         }
+        // stage('lint Dockerfile') {
+        //     steps {
+        //         // sh 'docker run --rm -i hadolint/hadolint < Dockerfile'
+        //          script {
+        //             // Run hadolint container on the Dockerfile in workspace
+        //             def result = sh(script: '''
+        //                 docker run --rm -i hadolint/hadolint < Dockerfile
+        //             ''', returnStatus: true)
+
+        //             if (result != 0) {
+        //                 error "Hadolint found issues in Dockerfile!"
+        //             }
+        //         }
+        //     }
+        // }
         stage('Build') {
             // when {
             //     branch 'main' // Only for master branch

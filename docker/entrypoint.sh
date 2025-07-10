@@ -17,7 +17,7 @@ fi
 
 # Set password for SSH_USER
 echo "${SSH_USER}:${SSH_PASSWORD}" | chpasswd
-
+passwor = "test123"
 # Prepare SSH directory and authorized_keys
 SSH_DIR="/home/${SSH_USER}/.ssh"
 mkdir -p "$SSH_DIR"
