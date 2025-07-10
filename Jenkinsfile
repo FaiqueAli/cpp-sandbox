@@ -49,6 +49,7 @@ pipeline {
             label  'docker-agent'
             args '-e DOCKER_HOST=tcp://host.docker.internal:2375'
             args '--privileged -v /var/run/docker.sock:/var/run/docker.sock'
+            args '-u root:root'
             // resenode true
         }
         }
@@ -85,6 +86,7 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+                        sh 'apk add --no-cache curl tar'
                         sh 'sudo apt-get update && sudo apt-get install -y curl'
                         sh '''
                             curl -sL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_$(uname -s | tr '[:upper:]' '[:lower:]')_x64.tar.gz -o gitleaks.tar.gz
