@@ -42,7 +42,7 @@
 pipeline {
     // agent any
     agent {
-        label 'Agent linux-cpp-sandbox-agent'
+        label 'linux-cpp-sandbox-agent'
         // Use the Docker image for the build environment
         // docker {
         //     // label 'agent-lable'
@@ -87,14 +87,8 @@ pipeline {
             steps {
                 script {
                     catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
-                        sh 'sudo apt-get update && sudo apt-get install -y curl'
-                        sh '''
-                            curl -sL https://github.com/gitleaks/gitleaks/releases/latest/download/gitleaks_$(uname -s | tr '[:upper:]' '[:lower:]')_x64.tar.gz -o gitleaks.tar.gz
-                            tar -xvzf gitleaks.tar.gz
-                            chmod +x gitleaks*       
-                            mv gitleaks* gitleaks    
-                            ./gitleaks detect --source=. --report-format=json --report-path=$GITLEAKS_REPORT --exit-code 1
-                            '''
+                        
+                        sh 'gitleaks detect --source=. --report-format=json --report-path=$GITLEAKS_REPORT --exit-code 1'
                     }
                 }
             }
