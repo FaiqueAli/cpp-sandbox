@@ -1,0 +1,15 @@
+    1  docker --version
+    3  docker swarm init --advertise-addr eth0
+    6  docker node ls 
+    7  docker service create --name web --replicas 3 -p 8080:80 nginx
+    8  docker node ls 
+    9  docker service ls
+   10  docker service ps web
+   11  docker service create --name web --replicas 3 -p 8080:80 nginx
+   12  hostname
+   13  docker service scale web=5
+   14  docker node ls
+   15  docker service ps web
+   16  docker service update --image nginx:alpine web
+   17  docker service inspect --pretty web
+   18  docker service ps web

@@ -4,12 +4,19 @@ FROM ubuntu:22.04 AS builder
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openssh-server sudo passwd netcat-openbsd && \
+    openssh-server=1:8.9p1-3ubuntu0.5 \
+    sudo=1.9.9-1ubuntu2.4 \
+    passwd=1:4.11.1+dfsg1-2ubuntu2.3 \
+    netcat-openbsd=1.218-4build1 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 # Create a placeholder user (actual username and password set at runtime)
 RUN useradd -m -s /bin/bash sshuser && \
-    echo "sshuser:placeholder" | chpasswd
+    echo "sshuser:placeholder" > /tmp/pass && \
+    chpasswd < /tmp/pass && \
+    rm /tmp/pass
+
 
 # Configure SSH server
 RUN sed -i 's/^#\?PermitRootLogin.*/PermitRootLogin no/' /etc/ssh/sshd_config && \
@@ -26,8 +33,12 @@ RUN chown sshuser:sshuser /entrypoint.sh && chmod 500 /entrypoint.sh
 FROM debian:bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    openssh-server sudo passwd netcat-openbsd && \
+    openssh-server=1:8.9p1-3ubuntu0.5 \
+    sudo=1.9.9-1ubuntu2.4 \
+    passwd=1:4.11.1+dfsg1-2ubuntu2.3 \
+    netcat-openbsd=1.218-4build1 && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
+
 
 COPY --from=builder /etc/ssh/sshd_config /etc/ssh/sshd_config
 COPY --from=builder /etc/passwd /etc/passwd
