@@ -42,8 +42,7 @@
 pipeline {
     // agent any
     agent {
-        { label 'Agent linux-cpp-sandbox-agent' }
-
+        label 'Agent linux-cpp-sandbox-agent'
         // Use the Docker image for the build environment
         // docker {
         //     // label 'agent-lable'
