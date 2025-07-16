@@ -1,0 +1,144 @@
+- name: Setup and compile C++ project on containers
+  hosts: cpp_nodes
+  become: yes
+
+  vars:
+    project_dir: /opt/my_cpp_project
+    local_base: "/mnt/c/Sioux-data/Sandbox/cpp-sandbox"
+
+  tasks:
+
+    - name: Install file utility
+      apt:
+        name: file
+        state: present
+        update_cache: yes
+ 
+    - name: Install build tools
+      apt:
+        name:
+          - build-essential
+          - make
+          - g++
+        state: present
+        update_cache: yes
+
+    - name: Clean previous project directory
+      file:
+        path: "{{ project_dir }}"
+        state: absent
+
+    - name: Ensure project directory exists
+      file:
+        path: "{{ project_dir }}"
+        state: directory
+        mode: '0755'
+
+    - name: Copy arithmetic_ops directory
+      copy:
+        src: "{{ local_base }}/arithmetic_ops/"
+        dest: "{{ project_dir }}/arithmetic_ops/"
+        mode: preserve
+        remote_src: no
+
+    - name: Verify Makefile in arithmetic_ops
+      stat:
+        path: "{{ project_dir }}/arithmetic_ops/Makefile"
+      register: arithmetic_makefile
+
+    - name: Fail if arithmetic_ops Makefile is missing
+      fail:
+        msg: "Makefile missing in arithmetic_ops!"
+      when: not arithmetic_makefile.stat.exists
+
+    - name: Copy input_handler directory
+      copy:
+        src: "{{ local_base }}/input_handler/"
+        dest: "{{ project_dir }}/input_handler/"
+        mode: preserve
+        remote_src: no
+
+    - name: Verify Makefile in input_handler
+      stat:
+        path: "{{ project_dir }}/input_handler/Makefile"
+      register: input_makefile
+
+    - name: Fail if input_handler Makefile is missing
+      fail:
+        msg: "Makefile missing in input_handler!"
+      when: not input_makefile.stat.exists
+
+    - name: Copy main_logic directory
+      copy:
+        src: "{{ local_base }}/main_logic/"
+        dest: "{{ project_dir }}/main_logic/"
+        mode: preserve
+        remote_src: no
+
+    - name: Verify Makefile in main_logic
+      stat:
+        path: "{{ project_dir }}/main_logic/Makefile"
+      register: logic_makefile
+
+    - name: Fail if main_logic Makefile is missing
+      fail:
+        msg: "Makefile missing in main_logic!"
+      when: not logic_makefile.stat.exists
+
+    - name: Copy calculator.cpp file
+      copy:
+        src: "{{ local_base }}/calculator.cpp"
+        dest: "{{ project_dir }}/calculator.cpp"
+        mode: preserve
+        remote_src: no
+
+    - name: clean arithmetic_ops
+      command: make clean
+      args:
+        chdir: "{{ project_dir }}/arithmetic_ops"
+
+    - name: Compile arithmetic_ops
+      command: make
+      args:
+        chdir: "{{ project_dir }}/arithmetic_ops"
+
+    - name: Clean input_handler
+      command: make clean
+      args:
+        chdir: "{{ project_dir }}/input_handler"
+
+    - name: Compile input_handler
+      command: make
+      args:
+        chdir: "{{ project_dir }}/input_handler"
+
+    - name: Clean main_logic
+      command: make clean
+      args:
+        chdir: "{{ project_dir }}/main_logic"
+
+    - name: Compile main_logic
+      command: make
+      args:
+        chdir: "{{ project_dir }}/main_logic"
+
+    - name: Ensure main_logic binary is executable
+      file:
+        path: "{{ project_dir }}/main_logic/main_logic_exec"
+        mode: '0755'
+        state: file
+    
+    - name: Check main_exec file type
+      command: file main_logic_exec
+      args:
+        chdir: "{{ project_dir }}/main_logic"
+      register: file_type_check
+
+    - name: Show file type
+      debug:
+        var: file_type_check.stdout
+
+    - name: Run the compiled binary
+      shell: ./main_logic_exec
+      args:
+        chdir: "{{ project_dir }}/main_logic"

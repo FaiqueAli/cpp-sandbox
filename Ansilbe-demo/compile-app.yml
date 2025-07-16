@@ -1,0 +1,86 @@
+- name: Setup C++ Application Nodes for developer user (no sudo)
+  hosts: cpp_nodes
+  become: true
+
+  vars:
+    cpp_user: developer
+    cpp_home: "/home/{{ cpp_user }}"
+    project_dir: "{{ cpp_home }}/my_cpp_project"
+    packages:
+      - build-essential
+      - g++
+      - make
+      - git
+      - python3
+      - python3-pip
+
+  tasks:
+    - name: Ensure developer user exists without sudo
+      ansible.builtin.user:
+        name: "{{ cpp_user }}"
+        shell: /bin/bash
+        create_home: yes
+
+    # No sudoers task, so developer won’t get sudo rights
+
+    - name: Ping all hosts
+      ansible.builtin.ping:
+
+    - name: Update apt cache
+      ansible.builtin.apt:
+        update_cache: yes
+
+    - name: Install build tools
+      ansible.builtin.apt:
+        name: "{{ packages }}"
+        state: present
+
+    - name: Create project directory in developer home
+      ansible.builtin.file:
+        path: "{{ project_dir }}/main_logic"
+        state: directory
+        owner: "{{ cpp_user }}"
+        group: "{{ cpp_user }}"
+        mode: '0755'
+        recurse: yes
+
+    - name: Copy Python dependencies from requirements.txt
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../docker-compose/requirements.txt"
+        dest: "{{ project_dir }}/"
+        owner: "{{ cpp_user }}"
+        group: "{{ cpp_user }}"
+        mode: '0755'
+    
+    - name: Install Python dependencies from requirements.txt
+      become: true
+      ansible.builtin.pip:
+        requirements: "{{ project_dir }}/requirements.txt"
+        executable: pip3
+    
+    - name: Copy C++ source files to developer home directory
+      ansible.builtin.copy:
+        src: "{{ playbook_dir }}/../main_logic/"
+        dest: "{{ project_dir }}/main_logic/"
+        owner: "{{ cpp_user }}"
+        group: "{{ cpp_user }}"
+        mode: '0755'
+
+
+    # - name: Build C++ project as developer
+    #   ansible.builtin.shell: |
+    #     make clean && make
+    #   args:
+    #     chdir: "{{ project_dir }}/main_logic"
+
+    # - name: Run the compiled binary as developer
+    #   ansible.builtin.shell: ./main_logic_exec
+    #   args:
+    #     chdir: "{{ project_dir }}/main_logic"
+    #   become_user: "{{ cpp_user }}"
+    #   register: run_output
+    #   ignore_errors: yes
+
+    # - name: Print execution output
+    #   ansible.builtin.debug:
+    #     var: run_output.stdout

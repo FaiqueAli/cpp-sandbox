@@ -96,6 +96,7 @@ pipeline {
         // stage('lint Dockerfile') {
         //     steps {
         //         // sh 'docker run --rm -i hadolint/hadolint < Dockerfile'
+        //         // sh 'docker scout cves compile-sandbox-cal --only-severity critical --exit-code'  //it will scan the image and exit pipeline if critical isssue found
         //          script {
         //             // Run hadolint container on the Dockerfile in workspace
         //             def result = sh(script: '''
@@ -169,7 +170,8 @@ pipeline {
         stage('Test Run') {
             steps {
                 // Run the calculator application for a basic test
-                sh './calculator'
+                sh 'pwd'
+                sh './main_logic/main_logic'
             }
         }
         stage('Clean Up') {

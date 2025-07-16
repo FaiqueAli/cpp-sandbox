@@ -1,7 +1,8 @@
 CC = g++
 CFLAGS = -Wall
 LIBS = ../arithmetic_ops/libarithmetic_ops.a ../input_handler/libinput_handler.a
-TARGET = main_logic
+TARGET = main_logic_exec
+# TARGET = main_logic
 
 all: $(TARGET)
 

@@ -1,0 +1,6 @@
+projectKey=CPP-Sandbox
+serverUrl=http://172.26.157.83:9000
+serverVersion=10.4.1.88267
+dashboardUrl=http://172.26.157.83:9000/dashboard?id=CPP-Sandbox
+ceTaskId=cf671388-6038-4005-8cf1-0b444545388a
+ceTaskUrl=http://172.26.157.83:9000/api/ce/task?id=cf671388-6038-4005-8cf1-0b444545388a
