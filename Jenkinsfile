@@ -60,7 +60,8 @@ pipeline {
      environment {
         DOCKER_HOST = 'tcp://host.docker.internal:2375'
         CHANGED_FOLDERS = ""
-         MY_USER = credentials('test') // Use this only if using secret text
+        MY_USER = credentials('test') // Use this only if using secret text
+        SONAR_TOKEN = credentials('jenkins-sonar')
     }
     
       
@@ -174,6 +175,21 @@ pipeline {
                 sh './main_logic/main_logic'
             }
         }
+        //###
+        
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('SonarQube') { // <- This name must match the SonarQube server name in Jenkins config
+                    sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=CPP-Sandbox \
+                        -Dsonar.sources=. \
+                        -Dsonar.token=$SONAR_TOKEN
+                    """
+                }
+            }
+        }
+        //###
         stage('Clean Up') {
             steps {
                 // Clean the build files
