@@ -168,6 +168,9 @@ pipeline {
         // }
         stage('SonarQube Analysis') {
             steps {
+                    sh 'pwd'
+                    sh 'ls -R'
+
                 withSonarQubeEnv('Jenkins-SonarCube-Server') { // <- This name must match the SonarQube server name in Jenkins config
                     sh """
                         sonar-scanner \
