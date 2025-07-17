@@ -180,7 +180,7 @@ pipeline {
         }
         stage('Clean Up') {
             steps {
-                // Clean the build files 
+                // Clean the build files
                 sh 'make clean'
             }
         }
