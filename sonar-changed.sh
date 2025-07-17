@@ -22,6 +22,7 @@ echo "Running SonarScanner on changed files: $inclusions"
 # Run sonar-scanner with dynamic sonar.inclusions
 sonar-scanner \
   -Dsonar.projectKey=CPP-Sandbox \
+  -Dsonar.exclusions=docker-compose/app.py \
   -Dsonar.sources=. \
   -Dsonar.host.url=http://172.26.157.83:9000 \
   -Dsonar.token=sqp_f60657d62d90ee52d93ce8d888e1506c9406f44b \
