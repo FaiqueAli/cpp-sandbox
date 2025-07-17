@@ -110,73 +110,62 @@ pipeline {
         //         }
         //     }
         // }
-        stage('Build') {
-            // when {
-            //     branch 'main' // Only for master branch
-            // }
-            
-            steps {
-
-                //start
-                script {
-                        sh 'git rev-parse origin/main > .cache'
-                         // Determine the type of branch
-                        def isMainBranch = (env.BRANCH_NAME == 'main')
-                        def isReleaseBranch = (env.BRANCH_NAME?.startsWith('release/'))
-                        // Cache save logic
-                        def cacheSave = isMainBranch || isReleaseBranch // Save cache for main or release branches
+        // stage('Build') {
+        //     steps {
+        //         script {
+        //                 sh 'git rev-parse origin/main > .cache'
+        //                  // Determine the type of branch
+        //                 def isMainBranch = (env.BRANCH_NAME == 'main')
+        //                 def isReleaseBranch = (env.BRANCH_NAME?.startsWith('release/'))
+        //                 // Cache save logic
+        //                 def cacheSave = isMainBranch || isReleaseBranch // Save cache for main or release branches
                         
-                        // Clear cache for release branches
-                        if (isReleaseBranch) {
-                            echo "On a release branch. Clearing existing cache."
-                            sh "rm -rf $WORKSPACE/**" // Ensure all existing cache is cleared
-                        }
-                        // Job Cacher plugin call
-                        cache(
-                            skipSave: !cacheSave, // Skip saving the cache for non-main branches
-                            caches: [
-                                arbitraryFileCache(
-                                    path: "$WORKSPACE",
-                                    // includes: "**/libarithmetic_ops.a",
-                                    includes: "compile.sh",
-                                    cacheValidityDecidingFile: isMainBranch || isReleaseBranch ? '.cache' : null // Use '.cache' only for main
-                        )],
-                            defaultBranch: "main"
-                        )
-                        {
-                            //----start
-                            if (isMainBranch || isReleaseBranch) {
-                                // Compile the C++ program
-                                sh 'chmod -R a+rwx $WORKSPACE/'
-                                // sh './folderNames.sh'
-                                sh './compile.sh'
+        //                 // Clear cache for release branches
+        //                 if (isReleaseBranch) {
+        //                     echo "On a release branch. Clearing existing cache."
+        //                     sh "rm -rf $WORKSPACE/**" // Ensure all existing cache is cleared
+        //                 }
+        //                 // Job Cacher plugin call
+        //                 cache(
+        //                     skipSave: !cacheSave, // Skip saving the cache for non-main branches
+        //                     caches: [
+        //                         arbitraryFileCache(
+        //                             path: "$WORKSPACE",
+        //                             // includes: "**/libarithmetic_ops.a",
+        //                             includes: "compile.sh",
+        //                             cacheValidityDecidingFile: isMainBranch || isReleaseBranch ? '.cache' : null // Use '.cache' only for main
+        //                 )],
+        //                     defaultBranch: "main"
+        //                 )
+        //                 {
+        //                     if (isMainBranch || isReleaseBranch) {
+        //                         // Compile the C++ program
+        //                         sh 'chmod -R a+rwx $WORKSPACE/'
+        //                         // sh './folderNames.sh'
+        //                         sh './compile.sh'
 
-                            } else if (env.CHANGE_ID) {
-                                echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
-                                // Add actions specific to pull requests targeting main
-                            } else {
-                                echo "This is not the main branch or a pull request."
-                                    // sh 'chmod +x folderNames.sh'
-                                    // sh './folderNames.sh'
-                                    sh 'chmod +x compile.sh'
-                                    sh './compile.sh'
+        //                     } else if (env.CHANGE_ID) {
+        //                         echo "This is a pull request to the main branch. Pull Request ID: ${env.CHANGE_ID}"
+        //                         // Add actions specific to pull requests targeting main
+        //                     } else {
+        //                         echo "This is not the main branch or a pull request."
+        //                             // sh 'chmod +x folderNames.sh'
+        //                             // sh './folderNames.sh'
+        //                             sh 'chmod +x compile.sh'
+        //                             sh './compile.sh'
 
-                            }
-                            //----end
-                        }
-                    }
-                //end
-            }
-        }
-        stage('Test Run') {
-            steps {
-                // Run the calculator application for a basic test
-                sh 'pwd'
-                sh './main_logic/main_logic'
-            }
-        }
-        //###
-        
+        //                     }
+        //                 }
+        //             }
+        //     }
+        // }
+        // stage('Test Run') {
+        //     steps {
+        //         // Run the calculator application for a basic test
+        //         sh 'pwd'
+        //         sh './main_logic/main_logic'
+        //     }
+        // }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') { // <- This name must match the SonarQube server name in Jenkins config
@@ -189,7 +178,6 @@ pipeline {
                 }
             }
         }
-        //###
         stage('Clean Up') {
             steps {
                 // Clean the build files
