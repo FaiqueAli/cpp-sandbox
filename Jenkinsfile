@@ -168,11 +168,11 @@ pipeline {
         // }
         stage('SonarQube Analysis') {
             steps {
-                    sh """
+                    sh '''
                         echo "[DEBUG] Jenkins working dir: $(pwd)"
                         echo "[DEBUG] Looking for docker-compose/app.py"
                         find . -name app.py
-                    """
+                    '''
 
                 withSonarQubeEnv('Jenkins-SonarCube-Server') { // <- This name must match the SonarQube server name in Jenkins config
                     sh """
