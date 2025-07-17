@@ -58,6 +58,11 @@
         requirements: "{{ project_dir }}/requirements.txt"
         executable: pip3
     
+    - name: Run Python requirements
+      ansible.builtin.command: pip3 install -r requirements.txt
+      args:
+        chdir: /home/developer/my_cpp_project
+        
     - name: Copy C++ source files to developer home directory
       ansible.builtin.copy:
         src: "{{ playbook_dir }}/../main_logic/"

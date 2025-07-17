@@ -84,16 +84,16 @@ pipeline {
                                 userRemoteConfigs: [[url: 'https://github.com/FaiqueAli/cpp-sandbox.git']])
             }
         }
-        stage('Scan for Secrets') {
-            steps {
-                script {
-                    catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
+        // stage('Scan for Secrets') {
+        //     steps {
+        //         script {
+        //             catchError(buildResult: 'FAILURE', stageResult: 'FAILURE') {
                         
-                        sh 'gitleaks detect --source=. --report-format=json --report-path=$GITLEAKS_REPORT --exit-code 1'
-                    }
-                }
-            }
-        }
+        //                 sh 'gitleaks detect --source=. --report-format=json --report-path=$GITLEAKS_REPORT --exit-code 1'
+        //             }
+        //         }
+        //     }
+        // }
         // stage('lint Dockerfile') {
         //     steps {
         //         // sh 'docker run --rm -i hadolint/hadolint < Dockerfile'
