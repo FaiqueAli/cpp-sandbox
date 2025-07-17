@@ -168,7 +168,7 @@ pipeline {
         // }
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') { // <- This name must match the SonarQube server name in Jenkins config
+                withSonarQubeEnv('Jenkins-SonarCube-Server') { // <- This name must match the SonarQube server name in Jenkins config
                     sh """
                         sonar-scanner \
                         -Dsonar.projectKey=CPP-Sandbox \
