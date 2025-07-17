@@ -168,16 +168,20 @@ pipeline {
         // }
         stage('SonarQube Analysis') {
             steps {
-                    sh 'pwd'
-                    sh 'ls -R'
+                    sh """
+                        echo "[DEBUG] Jenkins working dir: $(pwd)"
+                        echo "[DEBUG] Looking for docker-compose/app.py"
+                        find . -name app.py
+                    """
 
                 withSonarQubeEnv('Jenkins-SonarCube-Server') { // <- This name must match the SonarQube server name in Jenkins config
                     sh """
                         sonar-scanner \
                         -Dsonar.projectKey=CPP-Sandbox \
                         -Dsonar.sources=. \
-                        -Dsonar.exclusions=**/docker-compose/app.py \
-                        -Dsonar.token=$SONAR_TOKEN
+                        -Dsonar.exclusions=**/docker-compose/** \
+                        -Dsonar.token=$SONAR_TOKEN \
+                        -Dsonar.verbose=true
                     """
                 }
             }
