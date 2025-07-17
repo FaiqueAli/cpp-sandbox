@@ -178,6 +178,14 @@ pipeline {
                 }
             }
         }
+        stage('SonarQube Quality Gate'){
+            steps{
+                // Wait for SonarQube to complete analysis and check gate status
+                timeout(time: 1, unit: 'MINUTES') {
+                waitForQualityGate abortPipeline: true
+        }
+            }
+        }
         stage('Clean Up') {
             steps {
                 // Clean the build files
