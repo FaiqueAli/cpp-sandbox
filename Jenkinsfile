@@ -180,7 +180,7 @@ pipeline {
                         sonar-scanner \
                         -Dsonar.projectKey=CPP-Sandbox \
                         -Dsonar.sources=. \
-                        -Dsonar.coverage.exclusions=**/docker-compose/app.py \
+                        -Dsonar.coverage.exclusions=docker-compose/app.py \
                         -Dsonar.exclusions=**/docker-compose/app.py \
                         -Dsonar.exclusions=**/Ansilbe-demo/Dockerfile \
                         -Dsonar.token=$SONAR_TOKEN \
