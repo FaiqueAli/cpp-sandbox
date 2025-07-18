@@ -173,12 +173,14 @@ pipeline {
                         echo "[DEBUG] Looking for docker-compose/app.py"
                         find . -name app.py
                     '''
-
+                // folders and file can also be ignored using sonarcube desboard as follow
+                // Go to project -> Project Settings -> General Settings -> Analysis Scope -> Source File Inclusions
                 withSonarQubeEnv('Jenkins-SonarCube-Server') { // <- This name must match the SonarQube server name in Jenkins config
                     sh """
                         sonar-scanner \
                         -Dsonar.projectKey=CPP-Sandbox \
                         -Dsonar.sources=. \
+                        -Dsonar.coverage.exclusions=**/docker-compose/app.py \
                         -Dsonar.exclusions=**/docker-compose/app.py \
                         -Dsonar.exclusions=**/Ansilbe-demo/Dockerfile \
                         -Dsonar.token=$SONAR_TOKEN \
